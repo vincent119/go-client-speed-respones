@@ -6,7 +6,7 @@ import (
 	"log"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"go-client-speed-respones/model"
+	//"go-client-speed-respones/model"
 )
 
 
