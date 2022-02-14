@@ -1,10 +1,10 @@
 package main
 
 import (
-	"flag"
+	//"flag"
 	"fmt"
 	"go-client-speed-respones/config"
-	"go-client-speed-respones/loggin"
+	//"go-client-speed-respones/loggin"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,12 +16,13 @@ func main(){
   config.Init(*environment)
   Port := config.GetServerPort()
   ServerPort :=":"+Port
-  ServerLog := config.GetServerLogPath()
-  fmt.Println(ServerLog)
+  //ServerLog := config.GetServerLogPath()
+  //fmt.Println(ServerLog)
   //logging.InitializeLogging(ServerLog)
   //log.Println("wwwwwww")
   //log.Fatalf("What Happened??")
-  loggin.MakeLogger(ServerLog,true)
+  //loggin.MakeLogger(ServerLog,true)
+
 
   Routes := gin.Default()
   Routes.SetTrustedProxies([]string{"172.16.99.200"})

@@ -5,10 +5,12 @@ import (
 	"os"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
-	//"honnef.co/go/tools/config"
-	//"fmt"
 )
+/*
 
+  test
+
+*/
 
 var (
 	cfg = pflag.StringP("Config","c","","./config/")
