@@ -1,45 +1,48 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"os"
-	"log"
+	"go-client-speed-respones/config"
+	"go-client-speed-respones/loggin"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
-	//"go-client-speed-respones/model"
 )
 
+//var Conf =&Config{}
 
-func init(){
-  confPath ,_ := os.Getwd()  
-	viper.AddConfigPath("./config/")
-	viper.AddConfigPath(confPath)
-	viper.SetConfigType("yaml")
-	viper.SetConfigName("config")
-	if err := viper.ReadInConfig(); err != nil {
-  	if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			// Config file not found; ignore error if desired
-			log.Println("no such config file")
-	} else {
-			// Config file was found but another error was produced
-			log.Println("read config error")
-	}
-	log.Fatal(err) 
-  }
-}
 
 func main(){
-	fmt.Println("application port = " + viper.GetString("app.port"))
-  fmt.Println(viper.GetString("app.logfile"))
+  environment := flag.String("e", "dev", "")
+  config.Init(*environment)
+  Port := config.GetServerPort()
+  ServerPort :=":"+Port
+  ServerLog := config.GetServerLogPath()
+  fmt.Println(ServerLog)
+  //logging.InitializeLogging(ServerLog)
+  //log.Println("wwwwwww")
+  //log.Fatalf("What Happened??")
+  loggin.MakeLogger(ServerLog,true)
 
-
-  r := gin.Default()
-	r.SetTrustedProxies([]string{"172.16.99.200"})
-
-	r.GET("/ping", func(c *gin.Context) {
+  Routes := gin.Default()
+  Routes.SetTrustedProxies([]string{"172.16.99.200"})
+  Routes.Any("/",HandleGet)
+  Routes.GET("/clinetrsp",HandleClinetResponse)
+	/*Routes.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-				"message": "pong",
+				"message": "pong","aaaa":header_host,
 		})
-	})
-	r.Run()
+	})*/
+  Routes.Run(ServerPort)
 }
+func HandleClinetResponse(c *gin.Context){
+  for k,v :=range c.Request.Header {
+		fmt.Println(k,v)
+	}
+}
+
+func HandleGet(c *gin.Context) {
+	c.JSON(200,gin.H{
+		"receive":"65535",
+	})
+}
+
