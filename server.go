@@ -3,28 +3,32 @@ package main
 import (
 	//"flag"
 	"fmt"
-	"go-client-speed-respones/config"
-	//"go-client-speed-respones/loggin"
+  "github.com/vincent119/go-client-speed-respones/config"
+  "github.com/vincent119/go-client-speed-respones/loggin" 
 	"github.com/gin-gonic/gin"
+  "log"
 )
 
 //var Conf =&Config{}
 
 
 func main(){
-  environment := flag.String("e", "dev", "")
-  config.Init(*environment)
+  //environment := flag.String("e", "dev", "")
+  config.Init()
   Port := config.GetServerPort()
   ServerPort :=":"+Port
-  //ServerLog := config.GetServerLogPath()
-  //fmt.Println(ServerLog)
-  //logging.InitializeLogging(ServerLog)
-  //log.Println("wwwwwww")
+  ServerLog := config.GetServerLogPath()
+  loggin.MakeLogger(ServerLog,true)
+  fmt.Println(ServerLog)
+  //loggin.InitializeLogging(ServerLog)
+  log.Println(ServerPort)
   //log.Fatalf("What Happened??")
-  //loggin.MakeLogger(ServerLog,true)
 
+
+  
 
   Routes := gin.Default()
+  Routes.Use(loggin.LoggerToFile(config.GetServerLogPath()))
   Routes.SetTrustedProxies([]string{"172.16.99.200"})
   Routes.Any("/",HandleGet)
   Routes.GET("/clinetrsp",HandleClinetResponse)

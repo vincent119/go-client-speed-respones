@@ -1,7 +1,7 @@
 package config
 
 import (
-	"log"
+	//"log"
 	"os"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -36,8 +36,8 @@ type LogrusConfig struct {
 
 var cf *viper.Viper
 var Conf Config
-func Init(env string) {
-	log.Print("This is the environment: ", env)
+func Init(){
+	//log.Print("This is the environment: ", env)
 	pflag.Parse()
 	cf = viper.New()
 	confPath ,_ := os.Getwd()
@@ -64,10 +64,9 @@ func GetServerPort()(x string) {
   return Conf.App.Port
 }
 
-func GetServerLogPath()(cx string){
+func GetServerLogPath() (x string) {
   return Conf.App.LogFile
 }
-
 
 
 
