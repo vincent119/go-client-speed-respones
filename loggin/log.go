@@ -30,7 +30,7 @@ func (mf *MyFormatter) Format(entry *logrus.Entry) ([]byte, error){
     strList := strings.Split(entry.Caller.File, "/")
     fileName := strList[len(strList)-1]
     b.WriteString(fmt.Sprintf("%s - %s - [line:%d] - %s - %s\n",
-        entry.Time.Format("2006-01-02 15:04:05,678"), fileName,
+        entry.Time.Format("2006-01-02 15:04:05.999"), fileName,
         entry.Caller.Line, level, entry.Message))
     return b.Bytes(), nil
 }

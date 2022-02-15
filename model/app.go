@@ -1,7 +1,8 @@
 package model
 
 
-type AppConfigStr struct {
-  Port string `mapstructure:"port" yaml:"port"`
-  Logfile string `mapstructure:logfile yaml:"logfile"`
+type UrlClinetrsp struct {
+  ClinetIP string `json:"ip"`
+  Domain string `json:domain"`
+  PingStaus bool `json:status`
 }

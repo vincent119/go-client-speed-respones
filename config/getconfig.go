@@ -18,11 +18,16 @@ var (
 
 type AppConf struct {
 	Port string `mapstructure:"port"`
+	LogPath string `mapstructure:"logpath"`
 	LogFile string `mapstructure:"logfile"`
+}
+type Url1 struct {
+	LogName string `mapstructure:"logname"`
 }
 
 type Config struct {
 	App AppConf `mapstructure:"app"`
+	Uri1 Url1 `mapstructure:"url1"`
 }
 
 type LogrusConfig struct {
@@ -63,11 +68,15 @@ func Init(){
 func GetServerPort()(x string) {
   return Conf.App.Port
 }
-
 func GetServerLogPath() (x string) {
+  return Conf.App.LogPath
+}
+func GetServerLogFile() (x string){
   return Conf.App.LogFile
 }
-
+func GetUrl1LogName() (x string){
+  return Conf.Uri1.LogName
+}
 
 
 

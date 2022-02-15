@@ -1,8 +1,11 @@
 app:
   port: "8080"
-  logfile: "/data/log-go/server-log"
+  logpath: "/data/log-go"
+  logfile: "server.log"
 #uri:
   #UriName1: "clinetrespones"
   #  logpath1: "/opt/logs/app/clinetrespones"
   #UriName: "clinetspeed"
   #  logpath: "/opt/logs/app/clinetspeed"
+url1:
+  logname: "clinetspeed.log"
