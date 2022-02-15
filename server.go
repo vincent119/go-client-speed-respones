@@ -5,6 +5,7 @@ import (
 	"fmt"
   "github.com/vincent119/go-client-speed-respones/config"
   "github.com/vincent119/go-client-speed-respones/loggin" 
+   "github.com/vincent119/go-client-speed-respones/model" 
 	"github.com/gin-gonic/gin"
   //"log"
   "time"
@@ -29,7 +30,7 @@ func main(){
   Routes.Use(loggin.LoggerToFile(config.GetServerLogFile()))
   Routes.SetTrustedProxies([]string{"172.16.99.200"})
   Routes.GET("/",HandleGet)
-  Routes.GET("/clinetrsp",HandleClinetResponse)
+  Routes.POST("/clinetrsp",HandleClinetResponse)
   Routes.GET("/healthcheck",HandleHealthCheck)
 	/*Routes.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -46,11 +47,20 @@ func HandleClinetResponse(c *gin.Context){
   //for k,v :=range c.Request.Header {
 	//	fmt.Println(k,v)
 	//}
+  //md := make(map[string]interface{})
+  md := model.UrlClinetrsp{}
+  //fmt.Println(c.Request.Header)
+  err := c.BindJSON(&md)
+  if err != nil {
+    return
+  }
+  fmt.Printf("%v\n" ,&md)
   c.JSON(200,gin.H{
     "Status":"OK", "recv_time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
-    "logName":config.GetUrl1LogName(),
+    "ip": md.ClinetIP,
   })
 }
+
 func HandleHealthCheck(c *gin.Context){
   //token = c.Request.Header["Token"]
 
