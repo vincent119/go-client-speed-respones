@@ -1,20 +1,17 @@
 package main
 
 import (
-	//"flag"
-	"fmt"
+  //"flag"
+  "fmt"
   "github.com/vincent119/go-client-speed-respones/config"
   "github.com/vincent119/go-client-speed-respones/loggin" 
    "github.com/vincent119/go-client-speed-respones/model" 
-	"github.com/gin-gonic/gin"
+  "github.com/gin-gonic/gin"
   //"log"
   "time"
   "strings"
   log4 "github.com/jeanphorn/log4go"
-
 )
-
-
 
 
 func main(){
