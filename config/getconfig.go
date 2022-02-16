@@ -6,11 +6,6 @@ import (
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
-/*
-
-  test
-
-*/
 
 var (
 	cfg = pflag.StringP("Config","c","","./config/")
@@ -20,6 +15,7 @@ type AppConf struct {
 	Port string `mapstructure:"port"`
 	LogPath string `mapstructure:"logpath"`
 	LogFile string `mapstructure:"logfile"`
+	Token  string  `mapstructure:"token"`
 }
 type Url1 struct {
 	LogName string `mapstructure:"logname"`
@@ -74,7 +70,10 @@ func GetServerLogPath() (x string) {
 func GetServerLogFile() (x string){
   return Conf.App.LogFile
 }
-func GetUrl1LogName() (x string){
+func GetServerToken() (x string){
+	return Conf.App.Token
+  }
+func GetUrl1LogFile() (x string){
   return Conf.Uri1.LogName
 }
 

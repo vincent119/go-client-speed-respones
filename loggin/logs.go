@@ -11,20 +11,13 @@ import (
 )
 
 func Logger(ph string) *logrus.Logger {
-	//now := time.Now()
-	
+
 	config.Init()
-	//conf.App.ServerLog()
 	logFilePath := config.GetServerLogPath()
 	logFileName := ph
-	//logFileName := config.GetUrl1LogName()
-	//if dir, err := os.Getwd(); err == nil {
-	//	logFilePath = dir + "/logs/"
-	//}
 	if err := os.MkdirAll(logFilePath, 0777); err != nil {
 		fmt.Println(err.Error())
 	}
-	//logFileName := now.Format("2006-01-02") + ".log"
 
 	fileName := path.Join(logFilePath, logFileName)
 	if _, err := os.Stat(fileName); err != nil {
@@ -52,17 +45,14 @@ func LoggerToFile(ph string) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 		startTime := time.Now()
-		//time.Now()
 		c.Next()
-		//fmt.Println(startTime)
 		endTime := time.Now()
-		//fmt.Println(endTime)
 		latencyTime := endTime.Sub(startTime)
 		reqMethod := c.Request.Method
 		reqUri := c.Request.RequestURI
 		statusCode := c.Writer.Status()
 		clientIP := c.ClientIP()
-		logger.Infof(" %3d  %13s  %15s  %s  %s ",
+		logger.Infof(" status=%3d  latencyTime=%9s  Address=%15s  method=%s  URI=%s ",
 			statusCode,
 			latencyTime,
 			clientIP,
@@ -72,9 +62,9 @@ func LoggerToFile(ph string) gin.HandlerFunc {
 	}
 }
 
-
-
-
+/*
+###############################################
+*/
 func Logger2() *logrus.Logger {
 	//now := time.Now()
 	

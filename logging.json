@@ -1,0 +1,41 @@
+{
+    "console": {
+        "enable": true,    
+        "level": "FINE"     
+    },  
+    "files": [{
+        "enable": true,
+        "level": "INFO",
+        "filename":"/data/log-go/pingcheck.log",
+        "category": "pingcheck",         
+        "pattern": "[%D %T] [%C] [%L]  %M" ,
+        "daily": true,
+        "rotate": true
+    },{ 
+        "enable": true,
+        "level": "INFO",
+        "filename":"/data/log-go/dnscheck.log",
+        "category": "dnscheck",
+        "pattern": "[%D %T] [%C] [%L] %M",
+        "rotate": true, 
+        "maxsize": "500M",
+        "maxlines": "10K",
+        "daily": true
+    },{
+        "enable": true,
+        "level": "INFO",
+        "filename":"/data/log-go/connectcheck.log",
+        "category": "connectcheck",         
+        "pattern": "[%D %T] [%C] [%L]  %M" ,
+        "daily": true,
+        "rotate": true
+    }], 
+    "sockets": [{
+        "enable": false,
+        "level": "DEBUG",
+        "category": "TestSocket",
+        "pattern": "[%D %T] [%C] [%L] (%S) %M",
+        "addr": "127.0.0.1:12124",
+        "protocol":"udp"
+    }]  
+}

@@ -9,6 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
   //"log"
   "time"
+  "strings"
+  log4 "github.com/jeanphorn/log4go"
 
 )
 
@@ -20,50 +22,88 @@ func main(){
   config.Init()
   Port := config.GetServerPort()
   ServerPort :=":"+Port
-  //ServerLog := config.GetServerLogPath()
-  //loggin.MakeLogger(ServerLog,true)
-  //fmt.Println(ServerLog)
-  //log.Println(ServerPort)
+  log4.LoadConfiguration("logging.json")
 
   Routes := gin.Default()
-  //logFileName := config.GetServerLogFile()
+  // Server log init
   Routes.Use(loggin.LoggerToFile(config.GetServerLogFile()))
   Routes.SetTrustedProxies([]string{"172.16.99.200"})
   Routes.GET("/",HandleGet)
-  Routes.POST("/clinetrsp",HandleClinetResponse)
+  // ping check
+  Routes.POST("/pcheck",HandlePingCheck)
+  // DNS check
+  Routes.POST("/dscheck",HandleDnsCheck)
+  //
+  Routes.POST("/conncheck",HandleConnCheck)
   Routes.GET("/healthcheck",HandleHealthCheck)
-	/*Routes.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-				"message": "pong","aaaa":header_host,
-		})
-	})*/
   Routes.Run(ServerPort)
 }
-func HandleClinetResponse(c *gin.Context){
-  //config.Init()
-  //fmt.Println(config.GetUrl1LogName())
-  //Routes := gin.Default()
-  //Routes.Use(loggin.LoggerToFile(config.GetUrl1LogName()))
-  //for k,v :=range c.Request.Header {
-	//	fmt.Println(k,v)
-	//}
-  //md := make(map[string]interface{})
-  md := model.UrlClinetrsp{}
-  //fmt.Println(c.Request.Header)
+
+func CheckHttpToken(c *gin.Context) bool{
+  TokenValues := c.GetHeader("token")
+  if config.GetServerToken() != TokenValues {
+    c.JSON(401,gin.H{
+      "Status": "401",
+    })
+    return false
+  } else {
+    return true
+  }
+}
+
+func HandleConnCheck(c *gin.Context){
+  st := model.ClientConnStatus{}
+  //token = c.Request.Header["Token"]
+  if CheckHttpToken(c) == false {
+    c.Abort()
+    return
+  }
+  err := c.BindJSON(&st)
+  if err != nil {
+    return
+  }
+  log4.LOGGER("connectcheck").Info(strings.Replace(fmt.Sprintf("%#v", st), ", ",",", -1))
+  c.JSON(200,gin.H{
+    "Status":"OK", "recv_time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
+  })
+}
+
+func HandleDnsCheck(c *gin.Context){
+  st := model.ClientDnsStatus{}
+  if CheckHttpToken(c) == false {
+    c.Abort()
+    return
+  }
+  err := c.BindJSON(&st)
+  if err != nil {
+    return
+  }
+  fmt.Print(st)
+  log4.LOGGER("dnscheck").Info(strings.Replace(fmt.Sprintf("%#v", st), ", ",",", -1))
+  c.JSON(200,gin.H{
+    "Status":"OK", "recv_time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
+  })
+}
+
+func HandlePingCheck(c *gin.Context){
+  md := model.ClientPingStatus{}
+  if CheckHttpToken(c) == false {
+    c.Abort()
+    return
+  }
   err := c.BindJSON(&md)
   if err != nil {
     return
   }
-  fmt.Printf("%v\n" ,&md)
+
+  log4.LOGGER("pingcheck").Info(strings.Replace(fmt.Sprintf("%#v", md), ", ",",", -1))
   c.JSON(200,gin.H{
     "Status":"OK", "recv_time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
-    "ip": md.ClinetIP,
   })
 }
 
 func HandleHealthCheck(c *gin.Context){
   //token = c.Request.Header["Token"]
-
   c.JSON(200,gin.H{
     "Status":"OK", "recv_time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
   })

@@ -2,6 +2,7 @@ app:
   port: "8080"
   logpath: "/data/log-go"
   logfile: "server.log"
+  token: "fa628786e20df8228570f0eae6f9bc99"
 #uri:
   #UriName1: "clinetrespones"
   #  logpath1: "/opt/logs/app/clinetrespones"
