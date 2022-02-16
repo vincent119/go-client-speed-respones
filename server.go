@@ -30,7 +30,7 @@ func main(){
   Routes.POST("/pcheck",HandlePingCheck)
   // DNS check
   Routes.POST("/dscheck",HandleDnsCheck)
-  //
+  // client connect check
   Routes.POST("/conncheck",HandleConnCheck)
   Routes.GET("/healthcheck",HandleHealthCheck)
   Routes.Run(ServerPort)
