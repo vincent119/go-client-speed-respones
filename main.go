@@ -12,7 +12,12 @@ import (
   "strings"
   log4 "github.com/jeanphorn/log4go"
 )
-
+// @title Gin
+// @version 1.0
+// @description Gin API
+// @contact.name Vincent Yu
+// @host localhost:8080
+// @schemes http
 
 func main(){
   //environment := flag.String("e", "dev", "")

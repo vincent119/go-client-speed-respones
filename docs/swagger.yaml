@@ -1,4 +1,11 @@
+host: localhost:8080
 info:
-  contact: {}
+  contact:
+    name: Vincent Yu
+  description: Gin API
+  title: Gin
+  version: "1.0"
 paths: {}
+schemes:
+- http
 swagger: "2.0"

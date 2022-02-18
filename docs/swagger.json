@@ -1,7 +1,16 @@
 {
+    "schemes": [
+        "http"
+    ],
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "Gin API",
+        "title": "Gin",
+        "contact": {
+            "name": "Vincent Yu"
+        },
+        "version": "1.0"
     },
+    "host": "localhost:8080",
     "paths": {}
 }

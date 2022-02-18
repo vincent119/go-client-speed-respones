@@ -2,12 +2,12 @@ package model
 
 
 type ClientPingStatus struct {
-  ClinetIP string `json:"ip"`
+  ClinetIP string `json:"clientIp"`
   Domain string `json:"domain"`
   PingStaus string `json:"status"`
-  PingMax int `json:"max"`
-  PingMin int `json:"min"`
-  PingAvg int `json:"avg"`
+  PingMax float32  `json:"max"`
+  PingMin float32  `json:"min"`
+  PingAvg float32  `json:"avg"`
   PackLoss int `json:"packloss"`
   TimeStamp string `json:"timestamp"`
 }
@@ -16,13 +16,13 @@ type ClientDnsStatus struct {
   ClinetIP string `json:"clientIp"`
   Domain string `json:"domainName"`
   DomainResult string `json:"domainResult"`
-  DoaminResp int`json:"domainresp"`
-  TimeStamp string `json:"time"`
+  DoaminResp float32 `json:"domainresp"`
+  TimeStamp string `json:"timestamp"`
 }
 
 type ClientConnStatus struct {
   ClinetIP string `json:"clientIp"`
   Domain string `json:"domainName"`
-  TimeStamp string `json:"time"`
+  TimeStamp string `json:"timestamp"`
   ConnStatus string `json:"status"`
 }
