@@ -5,7 +5,68 @@ info:
   description: Gin API
   title: Gin
   version: "1.0"
-paths: {}
+paths:
+  /:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+  /conncheck:
+    post:
+      parameters:
+      - description: 10.10.1.1
+        in: path
+        name: clientIp
+        required: true
+        type: string
+      - description: www.abc.com
+        in: path
+        name: domain
+        required: true
+        type: string
+      - description: 2022/02/18 12:25:48.32
+        in: path
+        name: time
+        required: true
+        type: string
+      - description: can not connect
+        in: path
+        name: status
+        required: true
+        type: string
+      produces:
+      - application/json;charset=utf-8
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: connect check fir Client
+  /dsheck:
+    post:
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+  /healthcheck:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Check health of api service
+  /pcheck:
+    post:
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: ping Status Check
 schemes:
 - http
 swagger: "2.0"

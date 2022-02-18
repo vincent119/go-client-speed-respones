@@ -52,7 +52,14 @@ func CheckHttpToken(c *gin.Context) bool{
     return true
   }
 }
-
+// @summary connect check fir Client
+// @Success 200 {string} string
+// @Router /conncheck [post]
+// @produce application/json;charset=utf-8
+// @param clientIp path string true "10.10.1.1"
+// @param domain path string true "www.abc.com"
+// @param time path string true "2022/02/18 12:25:48.32"
+// @param status path string true "can not connect"
 func HandleConnCheck(c *gin.Context){
   st := model.ClientConnStatus{}
   //token = c.Request.Header["Token"]
@@ -69,7 +76,8 @@ func HandleConnCheck(c *gin.Context){
     "Status":"OK", "recv_time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
   })
 }
-
+// @Success 200 {string} string
+// @Router /dsheck [post]
 func HandleDnsCheck(c *gin.Context){
   st := model.ClientDnsStatus{}
   if CheckHttpToken(c) == false {
@@ -86,7 +94,9 @@ func HandleDnsCheck(c *gin.Context){
     "Status":"OK", "recv_time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
   })
 }
-
+// @summary ping Status Check 
+// @Success 200 {string} string
+// @Router /pcheck [post]
 func HandlePingCheck(c *gin.Context){
   md := model.ClientPingStatus{}
   if CheckHttpToken(c) == false {
@@ -103,14 +113,17 @@ func HandlePingCheck(c *gin.Context){
     "Status":"OK", "recv_time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
   })
 }
-
+// @summary Check health of api service
+// @Success 200 {string} string
+// @Router /healthcheck [get]
 func HandleHealthCheck(c *gin.Context){
   //token = c.Request.Header["Token"]
   c.JSON(200,gin.H{
     "Status":"OK", "recv_time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
   })
 }
-
+// @Success 200 {string} string
+// @Router / [get]
 func HandleGet(c *gin.Context) {
   //Routes.Use(loggin.LoggerToFile())
 	c.JSON(200,gin.H{
