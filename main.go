@@ -32,7 +32,7 @@ func main(){
   Routes.SetTrustedProxies([]string{"172.16.99.200"})
   Routes.GET("/",HandleGet)
   // ping check
-  Routes.POST("/pcheck",HandlePingCheck)
+  Routes.POST("/scheck",HandlePingCheck)
   // DNS check
   Routes.POST("/dscheck",HandleDnsCheck)
   // client connect check
