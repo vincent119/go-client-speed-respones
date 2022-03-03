@@ -15,7 +15,7 @@ type AppConf struct {
 	Port string `mapstructure:"port"`
 	LogPath string `mapstructure:"logpath"`
 	LogFile string `mapstructure:"logfile"`
-	Ukey  string  `mapstructure:"ukey"`
+	Ukey string `mapstructure:"ukey"`
 	Slat string `mapstructure:"slat"`
 }
 type Url1 struct {
@@ -31,7 +31,7 @@ type RedisConfig struct {
 type Config struct {
 	App AppConf `mapstructure:"app"`
 	Uri1 Url1 `mapstructure:"url1"`
-	RedisCfg RedisConfig `mapstructure:"RedisConfig"`
+	RedisCfg RedisConfig `mapstructure:"redis"`
 }
 
 type LogrusConfig struct {
@@ -81,6 +81,9 @@ func GetServerLogFile() (x string){
 func GetServerUkey() (x string){
 	return Conf.App.Ukey
 }
+func GetServerSalt() (x string){
+	return Conf.App.Slat
+}
 func GetUrl1LogFile() (x string){
   return Conf.Uri1.LogName
 }
@@ -91,10 +94,10 @@ func RedisHost() (x string){
   return Conf.RedisCfg.Host
 }
 func RedisAuth() (x string){
-	return Conf.RedisCfg.Auth
+  return Conf.RedisCfg.Auth
 }
 func RedisTtl() (x int){
-	return Conf.RedisCfg.TTL
+  return Conf.RedisCfg.TTL
 }
 
 

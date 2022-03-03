@@ -12,10 +12,6 @@ import (
   "strings"
   log4 "github.com/jeanphorn/log4go"
 )
-func init(){
-  config.Init()  
-  model.RedisInit()
-}
 // @title Gin
 // @version 1.0
 // @description Gin API
@@ -25,6 +21,7 @@ func init(){
 
 func main(){
   //environment := flag.String("e", "dev", "")
+  config.Init()
   Port := config.GetServerPort()
   ServerPort :=":"+Port
   log4.LoadConfiguration("logging.json")
