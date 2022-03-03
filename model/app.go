@@ -4,7 +4,6 @@ package model
 type ClientPingStatus struct {
   ClinetIP string `json:"clientIp"`
   Domain string `json:"domain"`
-  Remote string `json:"Remote"`
   PingMax float32  `json:"max"`
   PingMin float32  `json:"min"`
   PingAvg float32  `json:"avg"`
@@ -24,7 +23,6 @@ type ClientDnsStatus struct {
 type ClientConnStatus struct {
   ClinetIP string `json:"clientIp"`
   Domain string `json:"domain"`
-  Remote string `json:"Remote"`
   Connect string `json:"Connect"`
   TimeStamp string `json:"timestamp"`
   ConnStatus string `json:"status"`
