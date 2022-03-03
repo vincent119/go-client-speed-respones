@@ -8,7 +8,6 @@ import (
   "github.com/go-redis/redis/v8"
 )
 
-
 func RedisInit() *redis.Client {
   //config.Init()
   rdb := redis.NewClient(&redis.Options{
@@ -20,10 +19,16 @@ func RedisInit() *redis.Client {
   fmt.Println("redis ping:", result.Val())
   if result.Val()!="PONG"{
 	// connecttion fail
-	fmt.Println("redis ping:", result.Val())
+	fmt.Println("redis not connect.........")
 	return nil
   }
+  fmt.Println("connect Redis succeed.........")
   return rdb
 }
+func RedSet(* redis.Client) {
 
+
+
+
+}
 
