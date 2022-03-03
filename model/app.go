@@ -27,3 +27,8 @@ type ClientConnStatus struct {
   TimeStamp string `json:"timestamp"`
   ConnStatus string `json:"status"`
 }
+
+type GetTokenString struct {
+  ClinetIP string `json:"clientIp"`
+  Uid string `json:"uid"`
+}

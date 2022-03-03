@@ -43,8 +43,8 @@ func main(){
 }
 
 func CheckHttpToken(c *gin.Context) bool{
-  TokenValues := c.GetHeader("token")
-  if config.GetServerToken() != TokenValues {
+  TokenValues := c.GetHeader("utoken")
+  if config.GetServerUkey() != TokenValues {
     c.JSON(401,gin.H{
       "Status": "401",
     })
