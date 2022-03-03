@@ -28,6 +28,7 @@ require (
 	github.com/go-redis/redis v6.15.9+incompatible // indirect
 	github.com/go-redis/redis/v8 v8.11.4 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/gomodule/redigo v1.8.8
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/jeanphorn/log4go v0.0.0-20190526082429-7dbb8deb9468 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
