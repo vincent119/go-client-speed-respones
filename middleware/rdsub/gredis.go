@@ -1,4 +1,4 @@
-package handle
+package rdsub
 //https://github.com/letseeqiji/gorobbs/blob/master/package/gredis/redis.go
 import (
 	"context"
