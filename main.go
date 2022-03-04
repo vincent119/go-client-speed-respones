@@ -39,6 +39,10 @@ func main() {
 	Port := config.GetServerPort()
 	ServerPort := ":" + Port
 	log4.LoadConfiguration("logging.json")
+
+
+
+	
 	Routes := gin.Default()
 	// Server log init
 	Routes.Use(loggin.LoggerToFile(config.GetServerLogFile()))
