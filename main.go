@@ -3,7 +3,7 @@ package main
 import (
 	//"flag"
 	"fmt"
-    "github.com/vincent119/go-client-speed-respones/middleware/rdsub"
+    //"github.com/vincent119/go-client-speed-respones/middleware/rdsub"
 	"github.com/vincent119/go-client-speed-respones/config"
 	"github.com/vincent119/go-client-speed-respones/loggin"
 	"github.com/vincent119/go-client-speed-respones/model"
@@ -39,7 +39,6 @@ func main() {
 	Port := config.GetServerPort()
 	ServerPort := ":" + Port
 	log4.LoadConfiguration("logging.json")
-
 	Routes := gin.Default()
 	// Server log init
 	Routes.Use(loggin.LoggerToFile(config.GetServerLogFile()))
