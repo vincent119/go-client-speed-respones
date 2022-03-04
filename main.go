@@ -3,7 +3,7 @@ package main
 import (
 	//"flag"
 	"fmt"
-  "github.com/vincent119/go-client-speed-respones/handle"
+  //"github.com/vincent119/go-client-speed-respones/handle"
 	"github.com/vincent119/go-client-speed-respones/config"
 	"github.com/vincent119/go-client-speed-respones/loggin"
 	"github.com/vincent119/go-client-speed-respones/model"
@@ -28,9 +28,9 @@ import (
 // @schemes http
 
 func main() {
-
+  
 	config.Init()
-	handle.redisSet("222", "9999", "ww")
+
 	//model.RedisConnection()
 
 	//model.RedisInit()
