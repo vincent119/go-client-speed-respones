@@ -12,7 +12,7 @@ import (
 
 func HandleConnCheck(c *gin.Context) {
 	st := model.ClientConnStatus{}
-	//token = c.Request.Header["Token"]aaaaaaa
+	//token = c.Request.Header["Token"]
 	if token.CheckHttpToken(c) == false {
 		c.Abort()
 		return

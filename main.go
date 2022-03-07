@@ -2,17 +2,16 @@ package main
 
 import (
 	"github.com/vincent119/go-client-speed-respones/config"
-	//	"go-client-speed-respones/loggin"
-	//"github.com/vincent119/go-client-speed-respones/model"
 	"github.com/vincent119/go-client-speed-respones/route"
-
-	"github.com/gin-gonic/gin"
-	"github.com/vincent119/go-client-speed-respones/loggin"
-
+	//"github.com/gin-gonic/gin"
+	//"github.com/vincent119/go-client-speed-respones/loggin"
+	"net/http"
 	//"log"
 	//"strings"
 	//"time"
-	log4 "github.com/jeanphorn/log4go"
+	//	"go-client-speed-respones/loggin"
+	//"github.com/vincent119/go-client-speed-respones/model"
+	//log4 "github.com/jeanphorn/log4go"
 )
 
 //func init(){
@@ -29,7 +28,7 @@ import (
 func main() {
 
 	config.Init()
-	route.InitRouter()
+	route := route.InitRouter()
 	//model.RedisConnection()
 
 	//model.RedisInit()
@@ -37,12 +36,11 @@ func main() {
 	//environment := flag.String("e", "dev", "")
 	Port := config.GetServerPort()
 	ServerPort := ":" + Port
-	log4.LoadConfiguration("logging.json")
+	//log4.LoadConfiguration("logging.json")
 
-	Routes := gin.Default()
-	// Server log init
-	Routes.Use(loggin.LoggerToFile(config.GetServerLogFile()))
-	Routes.SetTrustedProxies([]string{"172.16.99.200"})
+	//Routes := gin.Default()
+	//Server log init
+	//Routes.SetTrustedProxies([]string{"172.16.99.200"})
 	/*	Routes.GET("/", HandleGet)
 		// ping check
 		Routes.POST("/scheck", HandlePingCheck)
@@ -51,7 +49,18 @@ func main() {
 		// client connect check
 		Routes.POST("/conncheck", HandleConnCheck)
 		Routes.GET("/healthcheck", HandleHealthCheck)  */
-	Routes.Run(ServerPort)
+	//Routes.Run(ServerPort)
+	s := &http.Server{
+		Addr:           ServerPort,
+		Handler:        route,
+		ReadTimeout:    10,
+		WriteTimeout:   10,
+		MaxHeaderBytes: 1 << 20,
+	}
+
+	if err := s.ListenAndServe(); err != nil {
+		panic(err.Error())
+	}
 
 }
 
