@@ -1,18 +1,17 @@
 package main
 
 import (
-	//"flag"
-	"fmt"
-    //"github.com/vincent119/go-client-speed-respones/middleware/rdsub"
 	"github.com/vincent119/go-client-speed-respones/config"
-	"github.com/vincent119/go-client-speed-respones/loggin"
-	"github.com/vincent119/go-client-speed-respones/model"
+	//	"go-client-speed-respones/loggin"
+	//"github.com/vincent119/go-client-speed-respones/model"
+	"github.com/vincent119/go-client-speed-respones/route"
 
 	"github.com/gin-gonic/gin"
-	//"log"
-	"strings"
-	"time"
+	"github.com/vincent119/go-client-speed-respones/loggin"
 
+	//"log"
+	//"strings"
+	//"time"
 	log4 "github.com/jeanphorn/log4go"
 )
 
@@ -28,9 +27,9 @@ import (
 // @schemes http
 
 func main() {
-  
-	config.Init()
 
+	config.Init()
+	route.InitRouter()
 	//model.RedisConnection()
 
 	//model.RedisInit()
@@ -40,25 +39,23 @@ func main() {
 	ServerPort := ":" + Port
 	log4.LoadConfiguration("logging.json")
 
-
-
-	
 	Routes := gin.Default()
 	// Server log init
 	Routes.Use(loggin.LoggerToFile(config.GetServerLogFile()))
 	Routes.SetTrustedProxies([]string{"172.16.99.200"})
-	Routes.GET("/", HandleGet)
-	// ping check
-	Routes.POST("/scheck", HandlePingCheck)
-	// DNS check
-	Routes.POST("/dscheck", HandleDnsCheck)
-	// client connect check
-	Routes.POST("/conncheck", HandleConnCheck)
-	Routes.GET("/healthcheck", HandleHealthCheck)
+	/*	Routes.GET("/", HandleGet)
+		// ping check
+		Routes.POST("/scheck", HandlePingCheck)
+		// DNS check
+		Routes.POST("/dscheck", HandleDnsCheck)
+		// client connect check
+		Routes.POST("/conncheck", HandleConnCheck)
+		Routes.GET("/healthcheck", HandleHealthCheck)  */
 	Routes.Run(ServerPort)
 
 }
 
+/*
 func CheckHttpToken(c *gin.Context) bool {
 	TokenValues := c.GetHeader("utoken")
 	if config.GetServerUkey() != TokenValues {
@@ -152,4 +149,4 @@ func HandleGet(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"receive": "65535", "time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
 	})
-}
+} */

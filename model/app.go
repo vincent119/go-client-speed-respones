@@ -31,4 +31,5 @@ type ClientConnStatus struct {
 type GetTokenString struct {
   ClinetIP string `json:"clientIp"`
   Uid string `json:"uid"`
+  Openid string `json:"openid"`
 }
