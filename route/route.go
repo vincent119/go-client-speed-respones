@@ -35,7 +35,7 @@ func HandlGenToken (c *gin.Context){
 	fmt.Println("tokenSrring : " ,tokenSrring)
   fmt.Println("md5 : " ,md5Value)
 	fmt.Println("256 : " ,tk.GenSha256(md5Value))
-  rds.Set("11111","111123",12)
+  rds.Set("11111","111123",1000)
 
 }
 

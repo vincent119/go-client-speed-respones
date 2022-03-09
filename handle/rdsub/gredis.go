@@ -2,7 +2,7 @@ package rdsub
 //https://github.com/letseeqiji/gorobbs/blob/master/package/gredis/redis.go
 import (
 	"context"
-	"encoding/json"
+	//"encoding/json"
 	"fmt"
 	"time"
 
@@ -49,10 +49,23 @@ func Setup() error {
 }
 
 // Set a key/value
-func Set(key string, data interface{}, time int) error {
-	conn := RedisConn.Get()
+func Set(key string, data string, time int) error {
+	conn := RedisConn.
 	defer conn.Close()
+  
+  fmt.Println(key)
+	fmt.Println(data)
+	fmt.Println(time)
 
+	 _ ,err := conn.Do("SET", key, data)
+	if err != nil {
+		return err
+	}
+	_, err = conn.Do("EXPIRE", key, time)
+	if err != nil {
+		return err
+	}
+	/*
 	value, err := json.Marshal(data)
 	if err != nil {
 		return err
@@ -67,7 +80,7 @@ func Set(key string, data interface{}, time int) error {
 	if err != nil {
 		return err
 	}
-
+*/
 	return nil
 }
 

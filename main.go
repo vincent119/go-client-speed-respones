@@ -12,7 +12,7 @@ import (
 	//"time"
 	 //"go-client-speed-respones/loggin"
 	//"github.com/vincent119/go-client-speed-respones/model"
-	"github.com/vincent119/go-client-speed-respones/middleware/rdsub"
+	"github.com/vincent119/go-client-speed-respones/handle/rdsub"
 	log4 "github.com/jeanphorn/log4go"
 	
 	//"github.com/vincent119/go-client-speed-respones/middleware/rdsub"
