@@ -1,23 +1,28 @@
 package main
 
 import (
+	//"net/http"
 	"github.com/vincent119/go-client-speed-respones/config"
-	"github.com/vincent119/go-client-speed-respones/route"
-	//"github.com/gin-gonic/gin"
-	//"github.com/vincent119/go-client-speed-respones/loggin"
-	"net/http"
-	//"log"
+	rt "github.com/vincent119/go-client-speed-respones/route"
+	"github.com/gin-gonic/gin"
+	"github.com/vincent119/go-client-speed-respones/loggin"
+	//tk "github.com/vincent119/go-client-speed-respones/handle/token"
+  //"fmt"
 	//"strings"
 	//"time"
-	//	"go-client-speed-respones/loggin"
+	 //"go-client-speed-respones/loggin"
 	//"github.com/vincent119/go-client-speed-respones/model"
-	//log4 "github.com/jeanphorn/log4go"
+	"github.com/vincent119/go-client-speed-respones/middleware/rdsub"
+	log4 "github.com/jeanphorn/log4go"
+	
+	//"github.com/vincent119/go-client-speed-respones/middleware/rdsub"
 )
 
-//func init(){
-//  config.Init()
-//  model.RedisInit()
-//}
+func init(){
+  config.Init()
+	rdsub.Setup()
+	//model.RedisInit()
+}
 // @title Gin
 // @version 1.0
 // @description Gin API
@@ -26,9 +31,8 @@ import (
 // @schemes http
 
 func main() {
-
-	config.Init()
-	route := route.InitRouter()
+	//config.Init()
+	//router := route.InitRouter()
 	//model.RedisConnection()
 
 	//model.RedisInit()
@@ -36,46 +40,36 @@ func main() {
 	//environment := flag.String("e", "dev", "")
 	Port := config.GetServerPort()
 	ServerPort := ":" + Port
-	//log4.LoadConfiguration("logging.json")
+	log4.LoadConfiguration("logging.json")
 
-	//Routes := gin.Default()
+	Routes := gin.Default()
+	Routes.Use(gin.Logger(),gin.Recovery())
 	//Server log init
-	//Routes.SetTrustedProxies([]string{"172.16.99.200"})
-	/*	Routes.GET("/", HandleGet)
-		// ping check
-		Routes.POST("/scheck", HandlePingCheck)
-		// DNS check
-		Routes.POST("/dscheck", HandleDnsCheck)
-		// client connect check
-		Routes.POST("/conncheck", HandleConnCheck)
-		Routes.GET("/healthcheck", HandleHealthCheck)  */
-	//Routes.Run(ServerPort)
-	s := &http.Server{
-		Addr:           ServerPort,
-		Handler:        route,
-		ReadTimeout:    10,
-		WriteTimeout:   10,
-		MaxHeaderBytes: 1 << 20,
-	}
-
-	if err := s.ListenAndServe(); err != nil {
-		panic(err.Error())
-	}
-
+	Routes.Use(loggin.LoggerToFile(config.GetServerLogFile()))
+	Routes.SetTrustedProxies([]string{"172.16.99.200"})
+	Routes.GET("/", rt.HandleGet)
+	// ping check
+	Routes.POST("/scheck", rt.HandlePingCheck)
+	// DNS check
+	Routes.POST("/dscheck", rt.HandleDnsCheck)
+	// client connect check
+	Routes.POST("/conncheck", rt.HandleConnCheck)
+	Routes.GET("/healthcheck", rt.HandleHealthCheck)
+	Routes.POST("/gentok",rt.HandlGenToken)
+	Routes.Run(ServerPort)
 }
 
-/*
-func CheckHttpToken(c *gin.Context) bool {
-	TokenValues := c.GetHeader("utoken")
-	if config.GetServerUkey() != TokenValues {
-		c.JSON(401, gin.H{
-			"Status": "401",
-		})
-		return false
-	} else {
-		return true
-	}
-}
+// func CheckHttpToken(c *gin.Context) bool {
+// 	TokenValues := c.GetHeader("utoken")
+// 	if config.GetServerUkey() != TokenValues {
+// 		c.JSON(401, gin.H{
+// 			"Status": "401",
+// 		})
+// 		return false
+// 	} else {
+// 		return true
+// 	}
+// }
 
 // @summary connect check fir Client
 // @Success 200 {string} string
@@ -85,10 +79,11 @@ func CheckHttpToken(c *gin.Context) bool {
 // @param domain path string true "www.abc.com"
 // @param time path string true "2022/02/18 12:25:48.32"
 // @param status path string true "can not connect"
+/*
 func HandleConnCheck(c *gin.Context) {
 	st := model.ClientConnStatus{}
 	//token = c.Request.Header["Token"]
-	if CheckHttpToken(c) == false {
+	if tk.CheckHttpToken(c) == false {
 		c.Abort()
 		return
 	}
@@ -106,7 +101,7 @@ func HandleConnCheck(c *gin.Context) {
 // @Router /dsheck [post]
 func HandleDnsCheck(c *gin.Context) {
 	st := model.ClientDnsStatus{}
-	if CheckHttpToken(c) == false {
+	if tk.CheckHttpToken(c) == false {
 		c.Abort()
 		return
 	}
@@ -126,7 +121,7 @@ func HandleDnsCheck(c *gin.Context) {
 // @Router /pcheck [post]
 func HandlePingCheck(c *gin.Context) {
 	md := model.ClientPingStatus{}
-	if CheckHttpToken(c) == false {
+	if tk.CheckHttpToken(c) == false {
 		c.Abort()
 		return
 	}
@@ -147,7 +142,7 @@ func HandlePingCheck(c *gin.Context) {
 func HandleHealthCheck(c *gin.Context) {
 	//token = c.Request.Header["Token"]
 	c.JSON(200, gin.H{
-		"Status": "OK", "recv_time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
+		"Health Status": "OK", "recv_time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
 	})
 }
 
@@ -158,4 +153,5 @@ func HandleGet(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"receive": "65535", "time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
 	})
-} */
+} 
+*/

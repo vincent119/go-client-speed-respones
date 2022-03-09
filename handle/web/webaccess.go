@@ -70,15 +70,17 @@ func HandlePingCheck(c *gin.Context) {
 // @Success 200 {string} string
 // @Router /healthcheck [get]
 func HandleHealthCheck(c *gin.Context) {
+	fmt.Println("220")
 	//token = c.Request.Header["Token"]
 	c.JSON(200, gin.H{
-		"Status": "OK", "recv_time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
+		"HealthCheck Status": "OK", "recv_time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
 	})
 }
 
 // @Success 200 {string} string
 // @Router / [get]
-func HandleGet(c *gin.Context) {
+func RootHandleGet(c *gin.Context) {
+	fmt.Println("993")
 	//Routes.Use(loggin.LoggerToFile())
 	c.JSON(200, gin.H{
 		"receive": "65535", "time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),

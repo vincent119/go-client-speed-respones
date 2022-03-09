@@ -16,7 +16,7 @@ type AppConf struct {
 	LogPath string `mapstructure:"logpath"`
 	LogFile string `mapstructure:"logfile"`
 	Ukey string `mapstructure:"ukey"`
-	Slat string `mapstructure:"slat"`
+	Slat string `mapstructure:"salt"`
 }
 type Url1 struct {
 	LogName string `mapstructure:"logname"`
