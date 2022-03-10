@@ -33,7 +33,7 @@ func Setup() error {
 				return nil, err
 			}
 
-			if _, err := c.Do("AUTH", config.RedisAuth); err != nil {
+			if _, err := c.Do("AUTH", config.RedisAuth()); err != nil {
 				c.Close()
 				return nil, err
 			}
@@ -50,39 +50,25 @@ func Setup() error {
 
 // Set a key/value
 func Set(key string, data string, time int) error {
-	conn := RedisConn.
+	conn := RedisConn.Get()
 	defer conn.Close()
   
-  fmt.Println(key)
-	fmt.Println(data)
-	fmt.Println(time)
+	replySet, err := conn.Do("SET", key, data)
+	if err != nil {
+	 fmt.Println("SET error: ", err)
+	}
+	fmt.Println(replySet)
 
-	 _ ,err := conn.Do("SET", key, data)
+	replySet , err = conn.Do("EXPIRE", key, time)
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
-	_, err = conn.Do("EXPIRE", key, time)
-	if err != nil {
-		return err
-	}
-	/*
-	value, err := json.Marshal(data)
-	if err != nil {
-		return err
-	}
-
-	_, err = conn.Do("SET", key, value)
-	if err != nil {
-		return err
-	}
-
-	_, err = conn.Do("EXPIRE", key, time)
-	if err != nil {
-		return err
-	}
-*/
+	fmt.Println(replySet)
+	
 	return nil
 }
+
 
 // Exists check a key
 func Exists(key string) bool {
@@ -98,7 +84,7 @@ func Exists(key string) bool {
 }
 
 // Get get a key
-func Get(key string) ([]byte, error) {
+/*func Get(key string) ([]byte, error) {
 	conn := RedisConn.Get()
 	defer conn.Close()
 
@@ -108,6 +94,15 @@ func Get(key string) ([]byte, error) {
 	}
 
 	return reply, nil
+}*/
+func Get(key string) string {
+	conn := RedisConn.Get()
+	defer conn.Close()
+	s, err := redis.String(conn.Do("GET",key))
+	if err !=nil {
+		fmt.Println(err)
+	}
+  return s
 }
 
 // Delete delete a kye

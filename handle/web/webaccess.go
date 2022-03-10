@@ -1,22 +1,23 @@
 package web
 
 import (
-	"github.com/gin-gonic/gin"
-  "time"
 	"fmt"
 	"strings"
+	"time"
+
+	"github.com/gin-gonic/gin"
 	log4 "github.com/jeanphorn/log4go"
 	"github.com/vincent119/go-client-speed-respones/model"
-	"github.com/vincent119/go-client-speed-respones/handle/token"
+	//"github.com/vincent119/go-client-speed-respones/handle/token"
 )
 
 func HandleConnCheck(c *gin.Context) {
 	st := model.ClientConnStatus{}
 	//token = c.Request.Header["Token"]
-	if token.CheckHttpToken(c) == false {
+	/* 	if token.CheckHttpToken(c) == false {
 		c.Abort()
 		return
-	}
+	} */
 	err := c.BindJSON(&st)
 	if err != nil {
 		return
@@ -31,10 +32,10 @@ func HandleConnCheck(c *gin.Context) {
 // @Router /dsheck [post]
 func HandleDnsCheck(c *gin.Context) {
 	st := model.ClientDnsStatus{}
-	if token.CheckHttpToken(c) == false {
+	/* 	if token.CheckHttpToken(c) == false {
 		c.Abort()
 		return
-	}
+	} */
 	err := c.BindJSON(&st)
 	if err != nil {
 		return
@@ -51,10 +52,10 @@ func HandleDnsCheck(c *gin.Context) {
 // @Router /pcheck [post]
 func HandlePingCheck(c *gin.Context) {
 	md := model.ClientPingStatus{}
-	if token.CheckHttpToken(c) == false {
+	/* 	if token.CheckHttpToken(c) == false {
 		c.Abort()
 		return
-	}
+	} */
 	err := c.BindJSON(&md)
 	if err != nil {
 		return

@@ -2,27 +2,28 @@ package main
 
 import (
 	//"net/http"
-	"github.com/vincent119/go-client-speed-respones/config"
-	rt "github.com/vincent119/go-client-speed-respones/route"
 	"github.com/gin-gonic/gin"
+	"github.com/vincent119/go-client-speed-respones/config"
+	tk "github.com/vincent119/go-client-speed-respones/handle/token"
 	"github.com/vincent119/go-client-speed-respones/loggin"
-	//tk "github.com/vincent119/go-client-speed-respones/handle/token"
-  //"fmt"
+	rt "github.com/vincent119/go-client-speed-respones/route"
+
+	//hp "github.com/vincent119/go-client-speed-respones/handle/http"
+	//"fmt"
 	//"strings"
 	//"time"
-	 //"go-client-speed-respones/loggin"
+	//"go-client-speed-respones/loggin"
 	//"github.com/vincent119/go-client-speed-respones/model"
-	"github.com/vincent119/go-client-speed-respones/handle/rdsub"
 	log4 "github.com/jeanphorn/log4go"
-	
+	"github.com/vincent119/go-client-speed-respones/handle/rdsub"
 	//"github.com/vincent119/go-client-speed-respones/middleware/rdsub"
 )
 
-func init(){
-  config.Init()
+func init() {
+	config.Init()
 	rdsub.Setup()
-	//model.RedisInit()
 }
+
 // @title Gin
 // @version 1.0
 // @description Gin API
@@ -43,19 +44,20 @@ func main() {
 	log4.LoadConfiguration("logging.json")
 
 	Routes := gin.Default()
-	Routes.Use(gin.Logger(),gin.Recovery())
+	Routes.Use(gin.Logger(), gin.Recovery())
 	//Server log init
 	Routes.Use(loggin.LoggerToFile(config.GetServerLogFile()))
 	Routes.SetTrustedProxies([]string{"172.16.99.200"})
 	Routes.GET("/", rt.HandleGet)
 	// ping check
-	Routes.POST("/scheck", rt.HandlePingCheck)
+	Routes.POST("/scheck", tk.CheckHttpToken,tk.CheckHttpXkey,tk.CheckRdbXkey, rt.HandlePingCheck)
 	// DNS check
 	Routes.POST("/dscheck", rt.HandleDnsCheck)
 	// client connect check
-	Routes.POST("/conncheck", rt.HandleConnCheck)
+	Routes.POST("/conncheck", tk.CheckHttpToken, rt.HandleConnCheck)
 	Routes.GET("/healthcheck", rt.HandleHealthCheck)
-	Routes.POST("/gentok",rt.HandlGenToken)
+	Routes.POST("/gentok", tk.CheckHttpToken, rt.HandlGenToken)
+
 	Routes.Run(ServerPort)
 }
 
@@ -153,5 +155,5 @@ func HandleGet(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"receive": "65535", "time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
 	})
-} 
+}
 */

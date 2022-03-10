@@ -1,23 +1,17 @@
 package cache
 
 import (
-	"fmt"
-  "os"
-  "github.com/gomodule/redigo/redis"
-	//"github.com/vincent119/go-client-speed-respones/model"
+	"github.com/vincent119/go-client-speed-respones/config"
+	rds "github.com/vincent119/go-client-speed-respones/handle/rdsub"
 )
 
 //var rc = model.RedisConnection()
 
-func RedisSet(key string, value string, rc redis.Conn) {
-	rc.Do("SET", key, value)
+func RedisSet(md5Value string, sha256Value string) {
+	rds.Set(md5Value, sha256Value, config.RedisTtl())
 }
 
-func RedisGet(key string, rc redis.Conn) string {
-	s, err := redis.String(rc.Do("GET", key))
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	return s
+func RedisGet(key string) string {
+	rep  := rds.Get(key)
+	return rep
 }

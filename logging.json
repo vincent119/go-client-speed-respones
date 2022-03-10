@@ -10,7 +10,8 @@
         "category": "pingcheck",         
         "pattern": "[%D %T] [%C] [%L]  %M" ,
         "daily": true,
-        "rotate": true
+        "rotate": true,
+        "maxbackup": 3
     },{ 
         "enable": true,
         "level": "INFO",
@@ -18,9 +19,8 @@
         "category": "dnscheck",
         "pattern": "[%D %T] [%C] [%L] %M",
         "rotate": true, 
-        "maxsize": "500M",
-        "maxlines": "10K",
-        "daily": true
+        "daily": true,
+        "maxbackup": 3
     },{
         "enable": true,
         "level": "INFO",
@@ -28,7 +28,17 @@
         "category": "connectcheck",         
         "pattern": "[%D %T] [%C] [%L]  %M" ,
         "daily": true,
-        "rotate": true
+        "rotate": true,
+        "maxbackup": 3
+    },{
+        "enable": true,
+        "level": "INFO",
+        "filename":"/data/log-go/genToken.log",
+        "category": "gentok",         
+        "pattern": "[%D %T] [%C] [%L]  %M" ,
+        "daily": true,
+        "rotate": true,
+        "maxbackup": 3
     }], 
     "sockets": [{
         "enable": false,
