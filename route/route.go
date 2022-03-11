@@ -23,8 +23,10 @@ func HandlGenToken(c *gin.Context) {
 	}
 	if len(st.ClinetIP) == 0 {
 		fmt.Println("Client ip is empty...")
-		ipFor := c.GetHeader("x-forwarded-for") //ey = true
-		fmt.Println("ipFor : ", ipFor)
+		//ipFor := c.GetHeader("x-forwarded-for") //ey = true
+		fmt.Println(c.ClientIP())
+		//fmt.Println("ipFor : ", ipFor)
+		st.ClinetIP = c.ClientIP()
 	}
 	// tokenString = openid + Ukey + Client IP
 	//tokenString := config.GetServerSalt() + "." + st.Openid + "." + st.Ukey + ":" + st.ClinetIP
