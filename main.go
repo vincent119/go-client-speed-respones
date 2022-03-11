@@ -54,7 +54,7 @@ func main() {
 	// DNS check
 	Routes.POST("/dscheck", rt.HandleDnsCheck)
 	// client connect check
-	Routes.POST("/conncheck", tk.CheckHttpToken, rt.HandleConnCheck)
+	Routes.POST("/conncheck", tk.CheckHttpToken,tk.CheckHttpXkey,tk.CheckRdbXkey,rt.HandleConnCheck)
 	Routes.GET("/healthcheck", rt.HandleHealthCheck)
 	Routes.POST("/gentok", tk.CheckHttpToken, rt.HandlGenToken)
 

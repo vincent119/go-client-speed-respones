@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 	"time"
-
+  //"github.com/google/uuid"
 	log4 "github.com/jeanphorn/log4go"
 	"github.com/vincent119/go-client-speed-respones/config"
 	co "github.com/vincent119/go-client-speed-respones/handle/crypto"
@@ -27,7 +27,10 @@ func HandlGenToken(c *gin.Context) {
 		fmt.Println("ipFor : ", ipFor)
 	}
 	// tokenString = openid + Ukey + Client IP
-	tokenString := config.GetServerSalt() + "." + st.Openid + "." + st.Ukey + ":" + st.ClinetIP
+	//tokenString := config.GetServerSalt() + "." + st.Openid + "." + st.Ukey + ":" + st.ClinetIP
+	//uuid := uuid.New()
+	//fmt.Println(uuid)
+  tokenString :=  config.GetServerUkey()+":"+st.Openid + ":" + st.Uid + ":" + st.ClinetIP+":"+config.GetServerVtoken()
 	//tokenString := st.Openid+":"+st.Ukey+":"+ st.ClinetIP
 	md5Value := co.GenMd5(tokenString)
 	md5ValueS := md5Value + ":" + config.GetServerSalt()
@@ -77,8 +80,6 @@ func HandlePingCheck(c *gin.Context) {
 	if err != nil {
 		return
 	}
-
-
 
 	log4.LOGGER("pingcheck").Info(strings.Replace(fmt.Sprintf("%#v", md), ", ", ",", -1))
 	c.JSON(200, gin.H{

@@ -29,6 +29,6 @@ type ClientConnStatus struct {
 
 type GenTokenString struct {
 	ClinetIP string `json:"clientIp"`
-	Ukey     string `json:"ukey"`
+	Uid     string `json:"uid"`
 	Openid   string `json:"openid"`
 }

@@ -3,7 +3,7 @@ app:
   logpath: "/data/log-go"
   logfile: "server.log"
   ukey: "fa628786e20df8228570f0eae6f9bc99"
-  utoken: "ohSh8Ohyieg1shaim852uw"
+  vtoken: "ohSh8Ohyieg1shaim852uw"
   salt: "beif@ie8Vo9UPah"
 redis:
   port: "6379"

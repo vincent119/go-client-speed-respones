@@ -16,6 +16,7 @@ type AppConf struct {
 	LogPath string `mapstructure:"logpath"`
 	LogFile string `mapstructure:"logfile"`
 	Ukey string `mapstructure:"ukey"`
+	Vtoken string `mapstructure:"vtoken"`
 	Slat string `mapstructure:"salt"`
 }
 type Url1 struct {
@@ -80,6 +81,9 @@ func GetServerLogFile() (x string){
 }
 func GetServerUkey() (x string){
 	return Conf.App.Ukey
+}
+func GetServerVtoken() (x string){
+	return Conf.App.Vtoken
 }
 func GetServerSalt() (x string){
 	return Conf.App.Slat

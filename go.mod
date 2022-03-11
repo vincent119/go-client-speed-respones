@@ -8,6 +8,8 @@ require (
 	github.com/spf13/viper v1.10.1
 )
 
+require github.com/google/uuid v1.3.0 // indirect
+
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
