@@ -6,7 +6,6 @@ import (
 )
 
 //var rc = model.RedisConnection()
-
 func RedisSet(md5Value string, sha256Value string) {
 	rds.Set(md5Value, sha256Value, config.RedisTtl())
 }
