@@ -17,8 +17,6 @@ import (
 	log4 "github.com/jeanphorn/log4go"
 	"github.com/vincent119/go-client-speed-respones/handle/rdsub"
 	//"github.com/vincent119/go-client-speed-respones/middleware/rdsub"
-	cors  "github.com/gin-contrib/cors"
-	"time"
 )
 
 func init() {
@@ -45,38 +43,22 @@ func main() {
 	ServerPort := ":" + Port
 	log4.LoadConfiguration("logging.json")
 
-	routes := gin.Default()
-	routes.Use(gin.Logger(), gin.Recovery())
-	corsConfig := cors.DefaultConfig()
-	corsConfig.AllowOrigins = []string{"*"}
-	//corsConfig.AllowAllOrigins = true
-	corsConfig.AllowHeaders = []string{"Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "accept", "origin", "Cache-Control", "X-Requested-With","Authorization","Connection","Host","Access-Control-Request-Method","x-key","utoken"}
-	corsConfig.AllowMethods = []string{"POST","OPTIONS","GET"}
-	corsConfig.ExposeHeaders = []string{"Content-Length"}
-	corsConfig.AllowCredentials = true
-	corsConfig.MaxAge = 12 * time.Hour
-	routes.Use(cors.New(corsConfig))
-	/* routes.Use(cors.New(cors.config{
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"POST"},
-		AllowHeaders:     []string{"Origin,Content-Type,x-key,utoken"},
-		AllowCredentials: true,
-		MaxAge: 12 * time.Hour,
-	 })) */
+	Routes := gin.Default()
+	Routes.Use(gin.Logger(), gin.Recovery())
 	//Server log init
-	routes.Use(loggin.LoggerToFile(config.GetServerLogFile()))
-	routes.SetTrustedProxies([]string{"172.16.99.200"})
-	routes.GET("/", rt.HandleGet)
+	Routes.Use(loggin.LoggerToFile(config.GetServerLogFile()))
+	Routes.SetTrustedProxies([]string{"172.16.99.200"})
+	Routes.GET("/", rt.HandleGet)
 	// ping check
-	routes.POST("/scheck", tk.CheckHttpToken,tk.CheckHttpXkey,tk.CheckRdbXkey, rt.HandlePingCheck)
+	Routes.POST("/scheck", tk.CheckHttpToken,tk.CheckHttpXkey,tk.CheckRdbXkey, rt.HandlePingCheck)
 	// DNS check
-	routes.POST("/dscheck", rt.HandleDnsCheck)
+	Routes.POST("/dscheck", rt.HandleDnsCheck)
 	// client connect check
-	routes.POST("/conncheck", tk.CheckHttpToken,tk.CheckHttpXkey,tk.CheckRdbXkey,rt.HandleConnCheck)
-	routes.GET("/healthcheck", rt.HandleHealthCheck)
-	routes.POST("/gentok", tk.CheckHttpToken, rt.HandlGenToken)
+	Routes.POST("/conncheck", tk.CheckHttpToken,tk.CheckHttpXkey,tk.CheckRdbXkey,rt.HandleConnCheck)
+	Routes.GET("/healthcheck", rt.HandleHealthCheck)
+	Routes.POST("/gentok", tk.CheckHttpToken, rt.HandlGenToken)
 
-	routes.Run(ServerPort)
+	Routes.Run(ServerPort)
 }
 
 // func CheckHttpToken(c *gin.Context) bool {
