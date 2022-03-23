@@ -50,10 +50,10 @@ func main() {
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowOrigins = []string{"*"}
 	//corsConfig.AllowAllOrigins = true
-	corsConfig.AllowHeaders = []string{"Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "accept", "origin", "Cache-Control", "X-Requested-With","Authorization","Connection","Host","Access-Control-Request-Method","x-key","utoken"}
+	corsConfig.AllowHeaders = []string{"Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "accept", "Origin", "Cache-Control", "X-Requested-With","Authorization","Connection","Host","Access-Control-Request-Method","x-key","utoken"}
 	corsConfig.AllowMethods = []string{"POST","OPTIONS","GET"}
-	corsConfig.ExposeHeaders = []string{"Content-Length"}
-	corsConfig.AllowCredentials = true
+	corsConfig.ExposeHeaders = []string{"Content-Length,x-key,utoken"}
+	//corsConfig.AllowCredentials = true
 	corsConfig.MaxAge = 12 * time.Hour
 	routes.Use(cors.New(corsConfig))
 	/* routes.Use(cors.New(cors.config{

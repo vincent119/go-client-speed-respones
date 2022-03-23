@@ -42,6 +42,7 @@ func HandlGenToken(c *gin.Context) {
 	log4.LOGGER("gentok").Info("value: %s", sha256Value)
 	c.Header("x-key", md5Value)
 	c.Header("uyccc","5555333555")
+	c.Header("Access-Control-Allow-Origin","*")
 	c.JSON(200, gin.H{
 		"Status": "OK", "recv_time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
 	})
