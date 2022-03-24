@@ -16,9 +16,10 @@ import (
 	//"github.com/vincent119/go-client-speed-respones/model"
 	log4 "github.com/jeanphorn/log4go"
 	"github.com/vincent119/go-client-speed-respones/handle/rdsub"
-	//"github.com/vincent119/go-client-speed-respones/middleware/rdsub"
-	cors  "github.com/gin-contrib/cors"
-	"time"
+	"github.com/vincent119/go-client-speed-respones/middleware"
+	"github.com/gin-contrib/gzip"
+	//cors  "github.com/gin-contrib/cors"
+	//"time"
 )
 
 func init() {
@@ -46,16 +47,22 @@ func main() {
 	log4.LoadConfiguration("logging.json")
 
 	routes := gin.Default()
-	routes.Use(gin.Logger(), gin.Recovery())
-	corsConfig := cors.DefaultConfig()
-	corsConfig.AllowOrigins = []string{"*"}
+	routes.Use(gin.Logger(), 
+	gin.Recovery(),
+	middleware.CORSMiddleware(),
+	gzip.Gzip(gzip.DefaultCompression),
+  )
+	//routes.Ues(middleware.CORSMiddleware())
+	//corsConfig := cors.DefaultConfig()
+	//corsConfig.AllowOrigins = []string{"*"}
 	//corsConfig.AllowAllOrigins = true
-	corsConfig.AllowHeaders = []string{"Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "accept", "Origin", "Cache-Control", "X-Requested-With","Authorization","Connection","Host","Access-Control-Request-Method","x-key","utoken"}
-	corsConfig.AllowMethods = []string{"POST","OPTIONS","GET"}
-	corsConfig.ExposeHeaders = []string{"Content-Length,x-key,utoken"}
-	//corsConfig.AllowCredentials = true
-	corsConfig.MaxAge = 12 * time.Hour
-	routes.Use(cors.New(corsConfig))
+	// corsConfig.AllowHeaders = []string{"Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "accept", "Origin", "Cache-Control", "X-Requested-With","Authorization","Connection","Host","Access-Control-Request-Method","x-key","utoken"}
+	// corsConfig.AllowMethods = []string{"POST","OPTIONS","GET"}
+	// corsConfig.ExposeHeaders = []string{"Content-Length,x-key,utoken"}
+	// //corsConfig.AllowCredentials = true
+	// corsConfig.MaxAge = 12 * time.Hour
+	
+	//routes.Use(cors.New(corsConfig))
 	/* routes.Use(cors.New(cors.config{
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"POST"},
@@ -74,8 +81,10 @@ func main() {
 	// client connect check
 	routes.POST("/conncheck", tk.CheckHttpToken,tk.CheckHttpXkey,tk.CheckRdbXkey,rt.HandleConnCheck)
 	routes.GET("/healthcheck", rt.HandleHealthCheck)
-	routes.POST("/gentok", tk.CheckHttpToken, rt.HandlGenToken)
-
+	// Route get token 
+	// HttpHeaderGet  get Http request header 
+	//routes.POST("/gentok", rt.HttpHeaderGet, tk.CheckHttpToken, rt.HandleGenToken)
+	routes.POST("/gentok", tk.CheckHttpToken, rt.HandleGenToken)
 	routes.Run(ServerPort)
 }
 

@@ -20,18 +20,18 @@ func CheckHttpToken(c *gin.Context) {
 func CheckHttpXkey(c *gin.Context) {
 	xkey := hp.HeaderXkey(c)
 	if xkey == "" {
-		fmt.Printf("xkey not found.....")
+		fmt.Println("xkey not found.....")
 		http401Return(c)
 }}
 
 func CheckRdbXkey(c *gin.Context) {
 	count := 0
   xkey := hp.HeaderXkey(c)
-	fmt.Printf("xkey: %s\n",xkey)
+	//fmt.Printf("xkey: %s\n",xkey)
 	rs := cache.RedisGet(xkey)
-	fmt.Printf("rs: %s\n",rs)
+	//fmt.Printf("rs: %s\n",rs)
 	if rs == "" {
-		fmt.Println("value not found......")
+		fmt.Println("redis key value not found......")
 		count= count+1
 	}
 	md5ValueS := xkey + ":" + config.GetServerSalt()

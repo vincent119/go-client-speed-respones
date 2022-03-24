@@ -15,7 +15,7 @@ import (
 	"github.com/vincent119/go-client-speed-respones/model"
 )
 
-func HandlGenToken(c *gin.Context) {
+func HandleGenToken(c *gin.Context) {
 	st := model.GenTokenString{}
 	err := c.BindJSON(&st)
 	if err != nil {
@@ -41,8 +41,8 @@ func HandlGenToken(c *gin.Context) {
 	log4.LOGGER("gentok").Info(strings.Replace(fmt.Sprintf("%#v", st), ", ", ",", -1))
 	log4.LOGGER("gentok").Info("value: %s", sha256Value)
 	c.Header("x-key", md5Value)
-	c.Header("uyccc","5555333555")
-	c.Header("Access-Control-Allow-Origin","*")
+	//c.Header("uyccc","5555333555")
+	//c.Header("Access-Control-Allow-Origin","*")
 	c.JSON(200, gin.H{
 		"Status": "OK", "recv_time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
 	})
@@ -77,7 +77,7 @@ func HandleDnsCheck(c *gin.Context) {
 
 // @summary ping Status Check
 // @Success 200 {string} string
-// @Router /pcheck [post]
+// @Router /scheck [post]
 func HandlePingCheck(c *gin.Context) {
 	md := model.ClientPingStatus{}
 	err := c.BindJSON(&md)
@@ -108,4 +108,15 @@ func HandleGet(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"receive": "65535", "time": fmt.Sprint(time.Now().Format("2006/1/2 15:04:05.999")),
 	})
+}
+
+func HttpHeaderGet(c *gin.Context) {
+	for k,v := range c.Request.Header {
+     fmt.Println(k,v)
+
+	}
+
+
+
+
 }
