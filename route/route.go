@@ -17,8 +17,10 @@ import (
 
 func HandleGenToken(c *gin.Context) {
 	st := model.GenTokenString{}
-	err := c.BindJSON(&st)
+	//err := c.BindJSON(&st)
+	err:= c.ShouldBind(&st)
 	if err != nil {
+		fmt.Println("json data error 123456...999")
 		return
 	}
 	if len(st.ClinetIP) == 0 {
@@ -50,7 +52,8 @@ func HandleGenToken(c *gin.Context) {
 
 func HandleConnCheck(c *gin.Context) {
 	st := model.ClientConnStatus{}
-	err := c.BindJSON(&st)
+	err:= c.ShouldBind(&st)
+	//err := c.BindJSON(&st)
 	if err != nil {
 		return
 	}
@@ -64,7 +67,8 @@ func HandleConnCheck(c *gin.Context) {
 // @Router /dsheck [post]
 func HandleDnsCheck(c *gin.Context) {
 	st := model.ClientDnsStatus{}
-	err := c.BindJSON(&st)
+	err:= c.ShouldBind(&st)
+	//err := c.BindJSON(&st)
 	if err != nil {
 		return
 	}
@@ -80,7 +84,8 @@ func HandleDnsCheck(c *gin.Context) {
 // @Router /scheck [post]
 func HandlePingCheck(c *gin.Context) {
 	md := model.ClientPingStatus{}
-	err := c.BindJSON(&md)
+	err:= c.ShouldBind(&md)
+	//err := c.BindJSON(&md)
 	if err != nil {
 		return
 	}

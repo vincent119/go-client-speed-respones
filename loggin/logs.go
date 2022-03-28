@@ -36,7 +36,7 @@ func Logger(ph string) *logrus.Logger {
 	logger.SetLevel(logrus.DebugLevel)
 	logger.SetFormatter(&logrus.TextFormatter{
 		TimestampFormat: "2006-1-2 15:04:05.9999",FullTimestamp: true, 
-		ForceColors: false, })
+		ForceColors: false})
 	return logger
 }
 

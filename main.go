@@ -20,6 +20,7 @@ import (
 	"github.com/gin-contrib/gzip"
 	//cors  "github.com/gin-contrib/cors"
 	//"time"
+//	"github.com/dvwright/xss-mw"
 )
 
 func init() {
@@ -33,8 +34,10 @@ func init() {
 // @contact.name Vincent Yu
 // @host localhost:8080
 // @schemes http
-
-func main() {
+func setupRoute() *gin.Engine{
+  //var xssMdlwr xss.XssMw
+	// Disable Print to console color 
+	gin.DisableConsoleColor()
 	//config.Init()
 	//router := route.InitRouter()
 	//model.RedisConnection()
@@ -42,12 +45,12 @@ func main() {
 	//model.RedisInit()
 	//model.RdbGet()
 	//environment := flag.String("e", "dev", "")
-	Port := config.GetServerPort()
-	ServerPort := ":" + Port
+	
 	log4.LoadConfiguration("logging.json")
 
 	routes := gin.Default()
 	routes.Use(gin.Logger(), 
+	//xssMdlwr.RemoveXss(),
 	gin.Recovery(),
 	middleware.CORSMiddleware(),
 	gzip.Gzip(gzip.DefaultCompression),
@@ -75,7 +78,7 @@ func main() {
 	routes.SetTrustedProxies([]string{"172.16.99.200"})
 	routes.GET("/", rt.HandleGet)
 	// ping check
-	routes.POST("/scheck", tk.CheckHttpToken,tk.CheckHttpXkey,tk.CheckRdbXkey, rt.HandlePingCheck)
+	routes.POST("/scheck", rt.HttpHeaderGet,tk.CheckHttpToken,tk.CheckHttpXkey,tk.CheckRdbXkey, rt.HandlePingCheck)
 	// DNS check
 	routes.POST("/dscheck", rt.HandleDnsCheck)
 	// client connect check
@@ -83,9 +86,17 @@ func main() {
 	routes.GET("/healthcheck", rt.HandleHealthCheck)
 	// Route get token 
 	// HttpHeaderGet  get Http request header 
-	//routes.POST("/gentok", rt.HttpHeaderGet, tk.CheckHttpToken, rt.HandleGenToken)
-	routes.POST("/gentok", tk.CheckHttpToken, rt.HandleGenToken)
-	routes.Run(ServerPort)
+	routes.POST("/gentok", rt.HttpHeaderGet, tk.CheckHttpToken, rt.HandleGenToken)
+	//routes.POST("/gentok", tk.CheckHttpToken, rt.HandleGenToken)
+	return routes
+}
+
+
+func main() {
+	Port := config.GetServerPort()
+	ServerPort := ":" + Port
+	r := setupRoute()
+	r.Run(ServerPort)
 }
 
 // func CheckHttpToken(c *gin.Context) bool {
