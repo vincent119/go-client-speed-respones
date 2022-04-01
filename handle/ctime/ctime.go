@@ -1,4 +1,4 @@
-package time
+package ctime
 
 import(
 	"fmt"
@@ -13,9 +13,9 @@ func FormatDateTime(t time.Time) string {
 	return buffer.String()
 }
 func FormatIso88601(t string) string {
-  t , err := time.Parse("2006/01/02 15:04:05",t)
+  t1 , err := time.Parse("2006/01/02 15:04:05",t)
 	if err != nil {
 		fmt.Println("Could not parse time:", err)
 	}
-  return t.Format("2006-01-02T15:04:05")
+  return t1.Format("2006-01-02T15:04:05")
 } 

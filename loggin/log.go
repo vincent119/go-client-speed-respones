@@ -22,6 +22,7 @@ const (
 
 func Log4(Logfile, Msg string)  {
     log := log4go.NewLogger()
+    log.LoadConfiguration("logging.json")
     log.AddFilter("file", log4go.INFO, log4go.NewFileLogWriter(Logfile,false,true))
     log.Info(Msg)
     log.Close()

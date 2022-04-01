@@ -14,6 +14,7 @@ import (
 	co "github.com/vincent119/go-client-speed-respones/handle/crypto"
 	rds "github.com/vincent119/go-client-speed-respones/handle/rdsub"
 	"github.com/vincent119/go-client-speed-respones/model"
+	"github.com/vincent119/go-client-speed-respones/handle/ctime"
 	//"encoding/json"
 	"reflect"
 )
@@ -60,8 +61,13 @@ func HandleConnCheck(c *gin.Context) {
 	if err != nil {
 		return
 	}
-
-	log4.LOGGER("connectcheck").Info(strings.Replace(fmt.Sprintf("%#v", st), ", ", ",", -1))
+	st.Category =  reflect.TypeOf(st).String()
+	st.Host = "App001"
+	t := st.TimeStamp
+	//fmt.Println(ctime.FormatIso88601(t))
+	st.TimeStamp = ctime.FormatIso88601(t)
+	fmt.Println(strings.Replace(fmt.Sprintf("%+v", st), ", ", ", ", -1))
+	log4.LOGGER("connectcheck").Info(strings.Replace(fmt.Sprintf("%+v", st), ", ", ",", -1))
 	c.JSON(200, gin.H{
 		"Status": "OK", "recv_time": fmt.Sprint(time.Now().Format("2006-01-02T15:04:05")),
 	})
@@ -76,8 +82,13 @@ func HandleDnsCheck(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	fmt.Print(st)
-	log4.LOGGER("dnscheck").Info(strings.Replace(fmt.Sprintf("%#v", st), ", ", ",", -1))
+	st.Category =  reflect.TypeOf(st).String()
+	st.Host = "App001"
+	t := st.TimeStamp
+	//fmt.Println(ctime.FormatIso88601(t))
+	st.TimeStamp = ctime.FormatIso88601(t)
+	fmt.Println(strings.Replace(fmt.Sprintf("%+v", st), ", ", ", ", -1))
+	log4.LOGGER("dnscheck").Info(strings.Replace(fmt.Sprintf("%+v", st), ", ", ",", -1))
 	c.JSON(200, gin.H{
 		"Status": "OK", "recv_time": fmt.Sprint(time.Now().Format("2006-01-02T15:04:05")),
 	})
@@ -87,7 +98,8 @@ func HandleDnsCheck(c *gin.Context) {
 // @Success 200 {string} string
 // @Router /scheck [post]
 func HandlePingCheck(c *gin.Context) {
-	md := model.PingStatus{}
+  md := model.ClientPingStatus{}
+	//md := model.PingStatus{}
 	err:= c.ShouldBind(&md)
 	//err := c.BindJSON(&md)
 	if err != nil {
@@ -96,35 +108,16 @@ func HandlePingCheck(c *gin.Context) {
 	//fmt.Println(reflect.TypeOf(md).String())
 	//md.pk = make(map[string]string)
 	//md.pk["cat"] = "55688"
-  
-
-
 	//fmt.Println(reflect.TypeOf(md).String())
 	//aa := reflect.TypeOf(md).String()+string(jsonE)
 	//md.Message = reflect.TypeOf(md)
 	md.Category = reflect.TypeOf(md).String()
 	md.Host = "App001"
 	t := md.TimeStamp
-	time1 , err := time.Parse("2006/01/02 15:04:05",t)
-	if err != nil {
-		fmt.Println("Could not parse time:", err)
-	}
-	fmt.Println("111: "+time1.Format("2006-01-02T15:04:05"))
-	md.TimeStamp = time1.Format("2006-01-02T15:04:05")
-	//jsonE, _ := json.Marshal(md)
-	//aa := string(jsonE)
-	//fmt.Printf("%+v\n",string(jsonE))
-	//fmt.Printf("%#v\n",string(jsonE))
-	//fmt.Printf("%s\n",string(jsonE))
+	fmt.Println(ctime.FormatIso88601(t))
+	md.TimeStamp = ctime.FormatIso88601(t)
 	fmt.Println(strings.Replace(fmt.Sprintf("%+v", md), ", ", ", ", -1))
 	log4.LOGGER("pingcheck").Info(strings.Replace(fmt.Sprintf("%+v", md), ", ", ", ", -1))
-	//log4.LOGGER("pingcheck").Info(string(jsonE))
-	//log4.LOGGER("pingcheck").Info(fmt.Printf("%s",reflect.TypeOf(md).String()+string(jsonE)))
-	//fmt.Sprintf("%#v",string(jsonE))
-	//log4.LOGGER("pingcheck").Info(strings.Replace(fmt.Println(string(jsonE)), ", ", ",", -1))
-	//log4.LOGGER("pingcheck").Info(fmt.Println(string(jsonE)))
-	//log4.LOGGER("pingcheck").Info(strings.Replace(fmt.Println(fmt.Sprintf("%+v",jsonE), ", ", ",", -1)))
-	//log4.LOGGER("pingcheck").Info(strings.Replace(fmt.Sprintf("%#v", md), ", ", ",", -1))
 	c.JSON(200, gin.H{
 		"Status": "OK", "recv_time": fmt.Sprint(time.Now().Format("2006-01-02T15:04:05")),
 	})
@@ -142,6 +135,7 @@ func HandleHealthCheck(c *gin.Context) {
 
 // @Success 200 {string} string
 // @Router / [get]
+// get root path 
 func HandleGet(c *gin.Context) {
 	//Routes.Use(loggin.LoggerToFile())
 	c.JSON(200, gin.H{
@@ -152,10 +146,5 @@ func HandleGet(c *gin.Context) {
 func HttpHeaderGet(c *gin.Context) {
 	for k,v := range c.Request.Header {
      fmt.Println(k,v)
-
 	}
-
-
-
-
 }

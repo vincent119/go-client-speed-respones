@@ -9,12 +9,8 @@ type ClientPingStatus struct {
 	PostStatus int     `json:"post"`
 	PackLoss   int     `json:"paxkloss"`
 	TimeStamp  string  `json:"timestamp"`
+	Other
 }
-type PingStatus struct {
-	ClientPingStatus
-	Host string `json:"host"`
-	Category string `json:"category"`
- }
 
 type ClientDnsStatus struct {
 	ClinetIP     string  `json:"clientIp"`
@@ -22,6 +18,12 @@ type ClientDnsStatus struct {
 	DomainResult string  `json:"domainResult"`
 	DoaminResp   float32 `json:"domainresp"`
 	TimeStamp    string  `json:"timestamp"`
+	Other
+}
+
+type Other struct{
+	Host string `json:"host"`
+	Category string `json:"category"`
 }
 
 type ClientConnStatus struct {
@@ -30,6 +32,7 @@ type ClientConnStatus struct {
 	Connect    string `json:"Connect"`
 	TimeStamp  string `json:"timestamp"`
 	ConnStatus string `json:"status"`
+	Other
 }
 
 type GenTokenString struct {
