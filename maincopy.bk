@@ -16,11 +16,7 @@ import (
 	//"github.com/vincent119/go-client-speed-respones/model"
 	log4 "github.com/jeanphorn/log4go"
 	"github.com/vincent119/go-client-speed-respones/handle/rdsub"
-	"github.com/vincent119/go-client-speed-respones/middleware"
-	"github.com/gin-contrib/gzip"
-	//cors  "github.com/gin-contrib/cors"
-	//"time"
-//	"github.com/dvwright/xss-mw"
+	//"github.com/vincent119/go-client-speed-respones/middleware/rdsub"
 )
 
 func init() {
@@ -34,10 +30,8 @@ func init() {
 // @contact.name Vincent Yu
 // @host localhost:8080
 // @schemes http
-func setupRoute() *gin.Engine{
-  //var xssMdlwr xss.XssMw
-	// Disable Print to console color 
-	//gin.DisableConsoleColor()
+
+func main() {
 	//config.Init()
 	//router := route.InitRouter()
 	//model.RedisConnection()
@@ -45,58 +39,26 @@ func setupRoute() *gin.Engine{
 	//model.RedisInit()
 	//model.RdbGet()
 	//environment := flag.String("e", "dev", "")
-	
-	log4.LoadConfiguration("logging.json")
-	
-	routes := gin.Default()
-	routes.Use(gin.Logger(), 
-	//xssMdlwr.RemoveXss(),
-	gin.Recovery(),
-	middleware.CORSMiddleware(),
-	gzip.Gzip(gzip.DefaultCompression),
-  )
-	//routes.Ues(middleware.CORSMiddleware())
-	//corsConfig := cors.DefaultConfig()
-	//corsConfig.AllowOrigins = []string{"*"}
-	//corsConfig.AllowAllOrigins = true
-	// corsConfig.AllowHeaders = []string{"Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "accept", "Origin", "Cache-Control", "X-Requested-With","Authorization","Connection","Host","Access-Control-Request-Method","x-key","utoken"}
-	// corsConfig.AllowMethods = []string{"POST","OPTIONS","GET"}
-	// corsConfig.ExposeHeaders = []string{"Content-Length,x-key,utoken"}
-	// //corsConfig.AllowCredentials = true
-	// corsConfig.MaxAge = 12 * time.Hour
-	
-	//routes.Use(cors.New(corsConfig))
-	/* routes.Use(cors.New(cors.config{
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"POST"},
-		AllowHeaders:     []string{"Origin,Content-Type,x-key,utoken"},
-		AllowCredentials: true,
-		MaxAge: 12 * time.Hour,
-	 })) */
-	//Server log init
-	routes.Use(loggin.LoggerToFile(config.GetServerLogFile()))
-	routes.SetTrustedProxies([]string{"172.16.99.200"})
-	routes.GET("/", rt.HandleGet)
-	// ping check
-	routes.POST("/scheck",tk.CheckHttpToken,tk.CheckHttpXkey,tk.CheckRdbXkey, rt.HandlePingCheck)
-	// DNS check
-	routes.POST("/dscheck", rt.HandleDnsCheck)
-	// client connect check
-	routes.POST("/conncheck", tk.CheckHttpToken,tk.CheckHttpXkey,tk.CheckRdbXkey,rt.HandleConnCheck)
-	routes.GET("/healthcheck", rt.HandleHealthCheck)
-	// Route get token 
-	// HttpHeaderGet  get Http request header 
-	routes.POST("/gentok", tk.CheckHttpToken, rt.HandleGenToken)
-	//routes.POST("/gentok", tk.CheckHttpToken, rt.HandleGenToken)
-	return routes
-}
-
-
-func main() {
 	Port := config.GetServerPort()
 	ServerPort := ":" + Port
-	r := setupRoute()
-	r.Run(ServerPort)
+	log4.LoadConfiguration("logging.json")
+
+	Routes := gin.Default()
+	Routes.Use(gin.Logger(), gin.Recovery())
+	//Server log init
+	Routes.Use(loggin.LoggerToFile(config.GetServerLogFile()))
+	Routes.SetTrustedProxies([]string{"172.16.99.200"})
+	Routes.GET("/", rt.HandleGet)
+	// ping check
+	Routes.POST("/scheck", tk.CheckHttpToken,tk.CheckHttpXkey,tk.CheckRdbXkey, rt.HandlePingCheck)
+	// DNS check
+	Routes.POST("/dscheck", rt.HandleDnsCheck)
+	// client connect check
+	Routes.POST("/conncheck", tk.CheckHttpToken,tk.CheckHttpXkey,tk.CheckRdbXkey,rt.HandleConnCheck)
+	Routes.GET("/healthcheck", rt.HandleHealthCheck)
+	Routes.POST("/gentok", tk.CheckHttpToken, rt.HandlGenToken)
+
+	Routes.Run(ServerPort)
 }
 
 // func CheckHttpToken(c *gin.Context) bool {

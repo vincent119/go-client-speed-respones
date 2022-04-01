@@ -10,6 +10,11 @@ type ClientPingStatus struct {
 	PackLoss   int     `json:"paxkloss"`
 	TimeStamp  string  `json:"timestamp"`
 }
+type PingStatus struct {
+	ClientPingStatus
+	Host string `json:"host"`
+	Category string `json:"category"`
+ }
 
 type ClientDnsStatus struct {
 	ClinetIP     string  `json:"clientIp"`
