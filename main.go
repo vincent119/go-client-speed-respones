@@ -3,6 +3,7 @@ package main
 import (
 	//"net/http"
 	"github.com/gin-gonic/gin"
+	"github.com/robfig/cron"
 	"github.com/vincent119/go-client-speed-respones/config"
 	tk "github.com/vincent119/go-client-speed-respones/handle/token"
 	"github.com/vincent119/go-client-speed-respones/loggin"
@@ -14,18 +15,20 @@ import (
 	//"time"
 	//"go-client-speed-respones/loggin"
 	//"github.com/vincent119/go-client-speed-respones/model"
+	"github.com/gin-contrib/gzip"
 	log4 "github.com/jeanphorn/log4go"
+	"github.com/vincent119/go-client-speed-respones/handle/cron"
 	"github.com/vincent119/go-client-speed-respones/handle/rdsub"
 	"github.com/vincent119/go-client-speed-respones/middleware"
-	"github.com/gin-contrib/gzip"
 	//cors  "github.com/gin-contrib/cors"
 	//"time"
-//	"github.com/dvwright/xss-mw"
+	//	"github.com/dvwright/xss-mw"
 )
 
 func init() {
 	config.Init()
 	rdsub.Setup()
+	cron.Crontab()
 }
 
 // @title Gin
