@@ -50,7 +50,7 @@ func HandleGenToken(c *gin.Context) {
 	md5ValueS := md5Value + ":" + config.GetServerSalt()
 	sha256Value := co.GenSha256(md5ValueS)
 	rds.Set(md5Value, sha256Value, config.RedisTtl())
-	log4.LOGGER("gentok").Info(strings.Replace(fmt.Sprintf("%#v", st), ", ", ",", -1))
+	log4.LOGGER("genkon").Info(strings.Replace(fmt.Sprintf("%#v", st), ", ", ",", -1))
 	//log4.LOGGER("gentok").Info("value: %s", sha256Value)
 	c.Header("x-key", md5Value)
 	//c.Header("uyccc","5555333555")

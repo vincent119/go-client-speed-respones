@@ -34,7 +34,7 @@
         "enable": true,
         "level": "INFO",
         "filename":"/data/log-go/genToken.log",
-        "category": "gentok",         
+        "category": "genkon",         
         "pattern": "[%D %T] [%C] [%L]  %M" ,
         "daily": true,
         "rotate": true,
