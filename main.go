@@ -3,12 +3,10 @@ package main
 import (
 	//"net/http"
 	"github.com/gin-gonic/gin"
-	"github.com/robfig/cron"
 	"github.com/vincent119/go-client-speed-respones/config"
 	tk "github.com/vincent119/go-client-speed-respones/handle/token"
 	"github.com/vincent119/go-client-speed-respones/loggin"
 	rt "github.com/vincent119/go-client-speed-respones/route"
-
 	//hp "github.com/vincent119/go-client-speed-respones/handle/http"
 	//"fmt"
 	//"strings"
@@ -17,9 +15,9 @@ import (
 	//"github.com/vincent119/go-client-speed-respones/model"
 	"github.com/gin-contrib/gzip"
 	log4 "github.com/jeanphorn/log4go"
-	"github.com/vincent119/go-client-speed-respones/handle/cron"
 	"github.com/vincent119/go-client-speed-respones/handle/rdsub"
 	"github.com/vincent119/go-client-speed-respones/middleware"
+	//"github.com/vincent119/go-client-speed-respones/handle/cron"
 	//cors  "github.com/gin-contrib/cors"
 	//"time"
 	//	"github.com/dvwright/xss-mw"
@@ -28,7 +26,8 @@ import (
 func init() {
 	config.Init()
 	rdsub.Setup()
-	cron.Crontab()
+	//cron.Init()
+	//cron.Crontab()
 }
 
 // @title Gin
@@ -48,7 +47,6 @@ func setupRoute() *gin.Engine{
 	//model.RedisInit()
 	//model.RdbGet()
 	//environment := flag.String("e", "dev", "")
-	
 	log4.LoadConfiguration("logging.json")
 	
 	routes := gin.Default()
@@ -81,15 +79,18 @@ func setupRoute() *gin.Engine{
 	routes.SetTrustedProxies([]string{"172.16.99.200"})
 	routes.GET("/", rt.HandleGet)
 	// ping check
-	routes.POST("/scheck",tk.CheckHttpToken,tk.CheckHttpXkey,tk.CheckRdbXkey, rt.HandlePingCheck)
+	routes.POST("/scheck",rt.HttpHeaderGet,tk.CheckHttpToken,tk.CheckHttpXkey,tk.CheckRdbXkey, rt.HandlePingCheck)
 	// DNS check
 	routes.POST("/dscheck", rt.HandleDnsCheck)
 	// client connect check
 	routes.POST("/conncheck", tk.CheckHttpToken,tk.CheckHttpXkey,tk.CheckRdbXkey,rt.HandleConnCheck)
-	routes.GET("/healthcheck", rt.HandleHealthCheck)
+	
+	routes.GET("/healthcheck", rt.HttpHeaderGet,rt.HandleHealthCheck)
 	// Route get token 
 	// HttpHeaderGet  get Http request header 
-	routes.POST("/gentok", tk.CheckHttpToken, rt.HandleGenToken)
+	routes.POST("/genkon", rt.HttpHeaderGet, tk.CheckHttpToken, rt.HandleGenToken)
+	//20220406 URI 錯誤 gentok ->genkon
+	//routes.POST("/gentok",rt.HttpHeaderGet,tk.CheckHttpToken, rt.HandleGenToken)
 	//routes.POST("/gentok", tk.CheckHttpToken, rt.HandleGenToken)
 	return routes
 }

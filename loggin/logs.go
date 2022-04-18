@@ -2,16 +2,16 @@ package loggin
 
 import (
 	"fmt"
-	"github.com/vincent119/go-client-speed-respones/config"
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"os"
 	"path"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
+	"github.com/vincent119/go-client-speed-respones/config"
 )
 
 func Logger(ph string) *logrus.Logger {
-
 	config.Init()
 	logFilePath := config.GetServerLogPath()
 	logFileName := ph
@@ -34,15 +34,15 @@ func Logger(ph string) *logrus.Logger {
 	logger := logrus.New()
 	logger.Out = src
 	logger.SetLevel(logrus.DebugLevel)
+	//logger.SetLevel(logrus.InfoLevel)
 	logger.SetFormatter(&logrus.TextFormatter{
-		TimestampFormat: "2006-1-2 15:04:05.9999",FullTimestamp: true, 
+		TimestampFormat: "2006-01-02T15:04:05.9999",FullTimestamp: true, 
 		ForceColors: false})
 	return logger
 }
 
 func LoggerToFile(ph string) gin.HandlerFunc {
 	logger := Logger(ph)
-
 	return func(c *gin.Context) {
 		startTime := time.Now()
 		c.Next()
@@ -52,7 +52,8 @@ func LoggerToFile(ph string) gin.HandlerFunc {
 		reqUri := c.Request.RequestURI
 		statusCode := c.Writer.Status()
 		clientIP := c.ClientIP()
-		logger.Info(" status=%3d  latencyTime=%9s  Address=%15s  method=%s  URI=%s ",
+		logger.Infof(" status=%3d  latencyTime=%9s  Address=%15s  method=%s  URI=%s",
+		//logger.Infof(" %3d  %13s  %15s  %s  %s ",
 			statusCode,
 			latencyTime,
 			clientIP,
@@ -117,7 +118,7 @@ func URILoggerToFile() gin.HandlerFunc {
 		reqUri := c.Request.RequestURI
 		statusCode := c.Writer.Status()
 		clientIP := c.ClientIP()
-		logger2.Infof(" %3d  %13s  %15s  %s  %s ",
+		logger2.Info(" %3d  %13s  %15s  %s  %s ",
 			statusCode,
 			latencyTime,
 			clientIP,

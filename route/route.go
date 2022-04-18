@@ -17,20 +17,26 @@ import (
 	"github.com/vincent119/go-client-speed-respones/handle/ctime"
 	//"encoding/json"
 	"reflect"
+	"os"
 )
 
 func HandleGenToken(c *gin.Context) {
+	//fmt.Printf("%s", "*****")
+	//fmt.Printf("%s", c.Request.Body)
 	st := model.GenTokenString{}
-	err := c.BindJSON(&st)
+	err:= c.ShouldBind(&st)
+	//err := c.BindJSON(&st)
 	//err:= c.ShouldBind(&st)
 	if err != nil {
 		fmt.Println("json data error 123456...999")
 		return
 	}
+
+	fmt.Println(strings.Replace(fmt.Sprintf("%+v", st), ", ", ", ", -1))
 	if len(st.ClinetIP) == 0 {
 		fmt.Println("Client ip is empty...")
 		//ipFor := c.GetHeader("x-forwarded-for") //ey = true
-		fmt.Println(c.ClientIP())
+		//fmt.Println(c.ClientIP())
 		//fmt.Println("ipFor : ", ipFor)
 		st.ClinetIP = c.ClientIP()
 	}
@@ -45,7 +51,7 @@ func HandleGenToken(c *gin.Context) {
 	sha256Value := co.GenSha256(md5ValueS)
 	rds.Set(md5Value, sha256Value, config.RedisTtl())
 	log4.LOGGER("gentok").Info(strings.Replace(fmt.Sprintf("%#v", st), ", ", ",", -1))
-	log4.LOGGER("gentok").Info("value: %s", sha256Value)
+	//log4.LOGGER("gentok").Info("value: %s", sha256Value)
 	c.Header("x-key", md5Value)
 	//c.Header("uyccc","5555333555")
 	//c.Header("Access-Control-Allow-Origin","*")
@@ -62,7 +68,7 @@ func HandleConnCheck(c *gin.Context) {
 		return
 	}
 	st.Category =  reflect.TypeOf(st).String()
-	st.Host = "App001"
+	st.Host, _ = os.Hostname()
 	t := st.TimeStamp
 	//fmt.Println(ctime.FormatIso88601(t))
 	st.TimeStamp = ctime.FormatIso88601(t)
@@ -83,11 +89,11 @@ func HandleDnsCheck(c *gin.Context) {
 		return
 	}
 	st.Category =  reflect.TypeOf(st).String()
-	st.Host = "App001"
+	st.Host,_ = os.Hostname()
 	t := st.TimeStamp
 	//fmt.Println(ctime.FormatIso88601(t))
 	st.TimeStamp = ctime.FormatIso88601(t)
-	fmt.Println(strings.Replace(fmt.Sprintf("%+v", st), ", ", ", ", -1))
+	//fmt.Println(strings.Replace(fmt.Sprintf("%+v", st), ", ", ", ", -1))
 	log4.LOGGER("dnscheck").Info(strings.Replace(fmt.Sprintf("%+v", st), ", ", ",", -1))
 	c.JSON(200, gin.H{
 		"Status": "OK", "recv_time": fmt.Sprint(time.Now().Format("2006-01-02T15:04:05")),
@@ -112,7 +118,7 @@ func HandlePingCheck(c *gin.Context) {
 	//aa := reflect.TypeOf(md).String()+string(jsonE)
 	//md.Message = reflect.TypeOf(md)
 	md.Category = reflect.TypeOf(md).String()
-	md.Host = "App001"
+	md.Host,_  = os.Hostname()
 	t := md.TimeStamp
 	fmt.Println(ctime.FormatIso88601(t))
 	md.TimeStamp = ctime.FormatIso88601(t)
