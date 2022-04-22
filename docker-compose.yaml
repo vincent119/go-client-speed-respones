@@ -1,0 +1,37 @@
+version: '3.4'
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    command: redis-server --save 60 1 --requirepass MDNcVb924a --loglevel warning
+    networks:
+      - clientspeed
+    sysctls:
+      net.core.somaxconn: 1024
+  go-client-speed:
+    image: vincent119/client-speed:1.0
+    container_name: client-speed
+    volumes:
+      - /data/log-go/:/data/log-go
+    ports:
+      - 8080:8080
+    networks:
+      - clientspeed
+    
+  #restart: always
+    links:
+      - redis
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nproc:
+        soft: 204800 
+        hard: 204800 
+      nofile:
+        soft: 204800 
+        hard: 204800 
+networks:
+  clientspeed:
+    driver: bridge
