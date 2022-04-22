@@ -12,23 +12,26 @@ import (
 	log4 "github.com/jeanphorn/log4go"
 	"github.com/vincent119/go-client-speed-respones/config"
 	co "github.com/vincent119/go-client-speed-respones/handle/crypto"
+	"github.com/vincent119/go-client-speed-respones/handle/ctime"
 	rds "github.com/vincent119/go-client-speed-respones/handle/rdsub"
 	"github.com/vincent119/go-client-speed-respones/model"
-	"github.com/vincent119/go-client-speed-respones/handle/ctime"
+
 	//"encoding/json"
-	"reflect"
 	"os"
+	"reflect"
+	"io/ioutil"
 )
 
+
 func HandleGenToken(c *gin.Context) {
-	//fmt.Printf("%s", "*****")
-	//fmt.Printf("%s", c.Request.Body)
 	st := model.GenTokenString{}
+	//x, _ := ioutil.ReadAll(c.Request.Body)
+  //fmt.Printf("%s\n", string(x))
 	err:= c.ShouldBind(&st)
 	//err := c.BindJSON(&st)
 	//err:= c.ShouldBind(&st)
 	if err != nil {
-		fmt.Println("json data error 123456...999")
+		fmt.Println("json data error")
 		return
 	}
 
@@ -153,4 +156,9 @@ func HttpHeaderGet(c *gin.Context) {
 	for k,v := range c.Request.Header {
      fmt.Println(k,v)
 	}
+}
+
+func HttpBodyGet(c *gin.Context) {
+	x, _ := ioutil.ReadAll(c.Request.Body)
+  fmt.Printf("%s\n", string(x))
 }
