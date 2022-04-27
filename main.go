@@ -95,7 +95,6 @@ func setupRoute() *gin.Engine{
 	return routes
 }
 
-
 func main() {
 	Port := config.GetServerPort()
 	ServerPort := ":" + Port
