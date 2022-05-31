@@ -51,7 +51,10 @@ func LoggerToFile(ph string) gin.HandlerFunc {
 		reqMethod := c.Request.Method
 		reqUri := c.Request.RequestURI
 		statusCode := c.Writer.Status()
-		clientIP := c.ClientIP()
+	  if c.ClientIP() == "127.0.0.1"{
+			clientIP := c.remot
+		}
+		//clientIP := c.ClientIP()
 		logger.Infof(" status=%3d  latencyTime=%9s  Address=%15s  method=%s  URI=%s",
 		//logger.Infof(" %3d  %13s  %15s  %s  %s ",
 			statusCode,
